@@ -4,7 +4,7 @@
     function displayHomeUrls(){
         $rawJSONPage = "https://pokeapi.co/api/v2/";
         $json = file_get_contents($rawJSONPage);
-        $json = json_decode(json_encode($booking), true);
+        $json = json_decode(json_encode($json), true);
         echo $json;      
     }       
 ?>
