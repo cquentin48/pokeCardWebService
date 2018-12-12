@@ -6,7 +6,5 @@
         $json = file_get_contents($rawJSONPage);
         $json = json_decode(json_encode($booking), true);
         echo $json;      
-    }
-
-    displayHomeUrls();        
+    }       
 ?>
