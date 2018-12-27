@@ -12,13 +12,8 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        $posts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findLatest();
 
-        return $this->render('default/index.html.twig', [
-            'posts' => $posts,
-        ]);
+        return $this->render('default/index.html.twig');
     }
 }
 ?>
