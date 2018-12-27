@@ -1,4 +1,7 @@
 #index:
-Index:
+controllers:
+    resource: '../src/Controller/'
+    type:     annotation
+index:
     path: /
     controller: App\Controller\DefaultController::index
