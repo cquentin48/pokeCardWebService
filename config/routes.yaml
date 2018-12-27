@@ -2,6 +2,9 @@
 controllers:
     resource: '../src/Controller/'
     type:     annotation
+pokemonBasicInfos:
+    path: /pokemon/{id}
+    controller: App\Controller\PokemonController::displayData
 index:
     path: /
     controller: App\Controller\DefaultController::index
