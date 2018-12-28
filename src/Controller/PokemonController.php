@@ -4,13 +4,14 @@ namespace App\Controller;
 use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PokemonController extends AbstractController
 {
     private static $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
+
     private function loadJSONData($adress, $pokemonId){
-        $rawJSONPage = $adress;
-        $rawJSONPage = "https://pokeapi.co/api/v2/pokemon/1/";
+        $rawJSONPage = $adress.$pokemonId."/";
         $jsonRawData = file_get_contents($rawJSONPage);
         $json = json_decode($jsonRawData, true);
         $jsonOutput = array();
@@ -18,15 +19,18 @@ class PokemonController extends AbstractController
         $jsonOutput['species'] = $json['species'];
         $jsonOutput['sprites'] = $json['sprites'];
         $jsonOutput['types'] = $json['types'];
-        $jsonEncoded = json_encode($jsonOutput);
-        return $jsonEncoded;
+        return $jsonOutput;
     }
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function renderPokemonBasicInformations($pokemonId)
+    
+    public function renderPokemonBasicInformations($id)
     {
-        return new JsonResponse(array('name' => loadJSONData($basicPokemonURL.$pokemonId.'/')));
+        if($id == 0){
+            
+        }
+        $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
+        return $this->render('index.html.php', array(
+            'jsonArray' => $jsonData
+        ));
     }
 }
 ?>
