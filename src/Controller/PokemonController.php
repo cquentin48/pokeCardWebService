@@ -44,7 +44,7 @@ class PokemonController extends AbstractController
     public function renderPokemonBasicInformations($id)
     {
         if($id == 0){
-			$returnedData = getAllPokemonBasicData();
+			$returnedData = $this->getAllPokemonBasicData();
             return $this->render('index.html.php', array(
                 'jsonArray' => $returnedData
             ));
