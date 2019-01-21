@@ -32,7 +32,7 @@ class PokemonController extends AbstractController
         $results = $json['results'];
         foreach($results as $key=>$result){
             $returnedPokemonData = array();
-			$name = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".$key."/");
+			$name = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".($key+1)."/");
 			$jsonNameReturn = json_decode($name);
 			$name = $jsonNameReturn['names'][5]['name'];
             $response = file_get_contents($result['url']);
