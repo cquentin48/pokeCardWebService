@@ -24,20 +24,17 @@ class PokemonController extends AbstractController
 
     function getAllPokemonBasicData()
     {
-        $response = file_get_contents('https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=0&limit=949');
+        $response = file_get_contents('https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=0&limit=100');
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
         $json = json_decode($response, true);
         $results = $json['results'];
-        foreach($results as $key=>$result){
+        foreach($results as $result){
             $returnedPokemonData = array();
-			$name = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".($key+1)."/");
-			$jsonNameReturn = json_decode($name, true);
-			$name = $jsonNameReturn['names'][5]['name'];
             $response = file_get_contents($result['url']);
             $returnedJSONData = json_decode($response,true);
-            $returnedPokemonData['name'] = $name;
+            $returnedPokemonData['name'] = $result['name'];
             $returnedPokemonData['sprite'] = $returnedJSONData['sprites']['back_default'];
             array_push($returnedData, $returnedPokemonData);
         }
