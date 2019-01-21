@@ -1,3 +1,12 @@
 #index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+controllers:
+    resource: '../src/Controller/'
+    type:     annotation
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+pokemonBasicInfos:
+    path: /pokemon/{id}
+    controller: App\Controller\PokemonController::renderPokemonBasicInformations
+    defaults:
+        id: 0
