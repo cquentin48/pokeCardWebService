@@ -30,13 +30,14 @@ class PokemonController extends AbstractController
         $returnedData = array();
         $json = json_decode($response, true);
         $results = $json['results'];
+		$returnedData['pokemonList'] = array();
         foreach($results as $result){
             $returnedPokemonData = array();
             $response = file_get_contents($result['url']);
             $returnedJSONData = json_decode($response,true);
             $returnedPokemonData['name'] = $result['name'];
-            $returnedPokemonData['sprite'] = $returnedJSONData['sprites']['back_default'];
-            array_push($returnedData, $returnedPokemonData);
+            $returnedPokemonData['sprite'] = $returnedJSONData['sprites']['front_default'];
+            array_push($returnedData['pokemonList'], $returnedPokemonData);
         }
         return $returnedData;
     }
@@ -44,8 +45,9 @@ class PokemonController extends AbstractController
     public function renderPokemonBasicInformations($id)
     {
         if($id == 0){
+			$returnedData = $this->getAllPokemonBasicData();
             return $this->render('index.html.php', array(
-                'jsonArray' => getAllPokemonBasicData()
+                'jsonArray' => $returnedData
             ));
         }else{
             $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
