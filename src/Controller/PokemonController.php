@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PokemonController extends AbstractController
 {
-    private static $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
-    private static $offSet = 20;
+    private static $BASICPOKEMONURL = "https://pokeapi.co/api/v2/pokemon/";
+    private static $LIMIT = 20;
 
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
@@ -25,38 +25,37 @@ class PokemonController extends AbstractController
 
     private function getAllPokemonBasicData($begin)
     {
-        $response = file_get_contents('https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=0&limit=100000');
+        $response = file_get_contents("$BASICPOKEMONURL?offset=$begin&limit=$LIMIT");
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
         $json = json_decode(json_encode($response), true);
         $data = json_decode($json);
+        $returnedData['count'] = $data['count'];
+        $returnedData['next'] = generateNextUrl($returnedData['count'],$begin);
         $results = $data->results;
         foreach($results as $result){
             $pokemonData = array();
+
             $response = file_get_contents($pokemon["url"]);
-            $json = json_decode(json_encode($response), true);
-            $data = json_decode($json);
-
-             $pokemon = json_decode(json_encode($result), true);
-             array_push($pokemons,$pokemon["name"]);
-
-             $response = file_get_contents($pokemon["url"]);
             $json = json_decode(json_encode($response), true);
             $data = json_decode($json);
             $sprite = json_decode(json_encode($data->sprites), true);
             array_push($pokemonSprites,$sprite["front_default"]);
-
-            $response = file_get_contents($pokemon["url"]);
-            $json = json_decode(json_encode($response), true);
-            $data = json_decode($json);
-            $sprite = json_decode(json_encode($data->sprites), true);
-            //var_dump($sprite["front_default"]);
             $pokemonData['name'] = $pokemon['name'];
             $pokemonData['sprite'] = $pokemon['front_default'];
             array_push($returnedData, $pokemonData);
         }
         return $returnedData;
+    }
+
+    private function generateNextUrl($count, $begin){
+        $newBeginning = $begin + $offSet;
+        $newLimit = $LIMIT;
+        if($newBeginning<$count){
+            $newLimit = ($newBeginning+$offSet<$count)?($count-$newBeginning):$offSet;
+        }
+        return "$BASICPOKEMONURL?offset=$newBeginning&limit=$newLimit";
     }
 
     private function generateJSONArray($array){
@@ -67,7 +66,7 @@ class PokemonController extends AbstractController
     
     public function renderPokemonBasicInformations($id)
     {
-        $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
+        $jsonData = $this->loadJSONData($BASICPOKEMONURL,$id);
         generateJSONArray($jsonData);
     }
 
