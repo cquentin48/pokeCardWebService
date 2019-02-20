@@ -25,7 +25,7 @@ class PokemonController extends AbstractController
 
     private function getAllPokemonBasicData($begin)
     {
-        $response = file_get_contents("$BASICPOKEMONURL?offset=$begin&limit=$LIMIT");
+        $response = file_get_contents("$this->BASICPOKEMONURL?offset=$begin&limit=$this->LIMIT");
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
@@ -51,11 +51,11 @@ class PokemonController extends AbstractController
 
     private function generateNextUrl($count, $begin){
         $newBeginning = $begin + $offSet;
-        $newLimit = $LIMIT;
+        $newLimit = $this->LIMIT;
         if($newBeginning<$count){
             $newLimit = ($newBeginning+$offSet<$count)?($count-$newBeginning):$offSet;
         }
-        return "$BASICPOKEMONURL?offset=$newBeginning&limit=$newLimit";
+        return "$this->BASICPOKEMONURL?offset=$newBeginning&limit=$newLimit";
     }
 
     private function generateJSONArray($array){
@@ -66,7 +66,7 @@ class PokemonController extends AbstractController
     
     public function renderPokemonBasicInformations($id)
     {
-        $jsonData = $this->loadJSONData($BASICPOKEMONURL,$id);
+        $jsonData = $this->loadJSONData($this->BASICPOKEMONURL,$id);
         generateJSONArray($jsonData);
     }
 
