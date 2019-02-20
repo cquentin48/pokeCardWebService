@@ -10,3 +10,8 @@ pokemonBasicInfos:
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
+pokemonList:
+    path: /pokemonList/{url}
+    controller: App\Controller\PokemonController::renderPokemonList
+    defaults:
+        url: 'https://pokeapi-215911.firebaseapp.com/api/v2/pokemon'

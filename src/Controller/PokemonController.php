@@ -22,14 +22,15 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
-    function getAllPokemonBasicData()
+    function getAllPokemonBasicData($listURL)
     {
-        $response = file_get_contents('https://pokeapi-215911.firebaseapp.com/api/v2/pokemon');
+        $response = file_get_contents($listURL);
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
         $json = json_decode($response, true);
         $results = $json['results'];
+        $returnedData['count'] = $results->count;
 		$returnedData['pokemonList'] = array();
         foreach($results as $result){
             $returnedPokemonData = array();
@@ -44,18 +45,17 @@ class PokemonController extends AbstractController
     
     public function renderPokemonBasicInformations($id)
     {
-        if($id == 0){
-			$returnedData = $this->getAllPokemonBasicData();
-            return $this->render('index.html.php', array(
-                'jsonArray' => $returnedData
-            ));
-        }else{
-            $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
-            return $this->render('index.html.php', array(
-                'jsonArray' => $jsonData
-            ));
-        }
+        $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
+        return $this->render('index.html.php', array(
+            'jsonArray' => $jsonData
+        ));
+    }
 
+    public function renderPokemonList($url){
+        $jsonData = $this->loadJSONData($url);
+        return $this->render('index.html.php', array(
+            'jsonArray' => $jsonData
+        ));
     }
 }
 ?>
