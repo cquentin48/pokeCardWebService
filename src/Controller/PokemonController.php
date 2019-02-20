@@ -31,7 +31,7 @@ class PokemonController extends AbstractController
         $returnedData = array();
         $json = json_decode(json_encode($response), true);
         $data = json_decode($json);
-        $returnedData['count'] = $data['count'];
+        $returnedData['count'] = $data->$count;
         $returnedData['next'] = generateNextUrl($returnedData['count'],$begin);
         $results = $data->results;
         foreach($results as $result){
