@@ -52,7 +52,7 @@ class PokemonController extends AbstractController
     }
 
     public function renderPokemonList($url){
-        $jsonData = $this->loadJSONData($url);
+        $jsonData = $this->getAllPokemonBasicData($url);
         return $this->render('index.html.php', array(
             'jsonArray' => $jsonData
         ));
