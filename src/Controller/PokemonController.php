@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PokemonController extends AbstractController
 {
-    private static $BASICPOKEMONURL = "https://pokeapi.co/api/v2/pokemon/";
-    private static $LIMIT = 20;
+    private $BASICPOKEMONURL = "https://pokeapi.co/api/v2/pokemon/";
+    private $LIMIT = 20;
 
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
