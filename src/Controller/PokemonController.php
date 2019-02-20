@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PokemonController extends AbstractController
 {
     private static $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
+    private static $offSet = 20;
 
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
@@ -22,14 +23,20 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
-    function getAllPokemonBasicData()
+    function getAllPokemonBasicData($begin)
     {
-        $response = file_get_contents('https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=0&limit=20');
+        $response = file_get_contents("https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=$begin&limit=$offSet");
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
         $json = json_decode($response, true);
         $results = $json['results'];
+        $returnedData['count'] = $json['count'];
+        if($begin+$offSet+1<$returnedData['count']){
+            $newBegin = $begin + $offSet+1;
+            $newOffSet = ($returnedData['count']<($newBegin+$offSet))?$returnedData['count']-$newBegin:$offSet;
+            $returnedData['next'] = "https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=$begin&limit=$newOffSet";
+        }
 		$returnedData['pokemonList'] = array();
         foreach($results as $result){
             $returnedPokemonData = array();

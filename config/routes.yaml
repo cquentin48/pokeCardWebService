@@ -8,5 +8,6 @@ index:
 pokemonBasicInfos:
     path: /pokemon/{id}
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
-    defaults:
-        id: 0
+getPokemonList:
+    path: /pokemonList/{begin}
+    controller: App\Controller\PokemonController::renderPokemonBasicList
