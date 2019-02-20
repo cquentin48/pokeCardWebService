@@ -8,7 +8,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PokemonController extends AbstractController
 {
-    private static $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
+    private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
+    private $normalLimit = 20;
+    private $lastLimit = 4;
+    private $lastOffset = 960;
 
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
@@ -22,7 +25,7 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
-    function getAllPokemonBasicData($listURL)
+    function getAllPokemonBasicData($pageId)
     {
         $response = file_get_contents($listURL);
         $pokemons = array();
@@ -51,8 +54,10 @@ class PokemonController extends AbstractController
         ));
     }
 
-    public function renderPokemonList($url){
-        $jsonData = $this->getAllPokemonBasicData($url);
+    public function renderPokemonList($pageId){
+        $offset = $pageId*($this->normalLimit);
+        $limit = ($offset==$this->lastOffset)?$this->lastOffset:$this->normalLimit;
+        $jsonData = $this->getAllPokemonBasicData("$this->basicPokemonURL?offset=$offset&limit=$limit");
         return $this->render('index.html.php', array(
             'jsonArray' => $jsonData
         ));
