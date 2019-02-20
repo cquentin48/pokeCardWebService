@@ -30,7 +30,7 @@ class PokemonController extends AbstractController
         $returnedData = array();
         $json = json_decode($response, true);
         $results = $json['results'];
-        $returnedData['count'] = $results->count;
+        $returnedData['count'] = $json->count;
 		$returnedData['pokemonList'] = array();
         foreach($results as $result){
             $returnedPokemonData = array();
