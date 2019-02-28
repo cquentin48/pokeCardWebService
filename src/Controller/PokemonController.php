@@ -44,21 +44,26 @@ class PokemonController extends AbstractController
     }
 
     function fetchPokedexPage($pageId){
-        return $this->render('index.html.php', array(
-            'jsonArray' => $this->getAllPokemonBasicData($pageId)
-        ));
+        if($pageId<0){
+            $errorData = [];
+            $errorData['title'] = "Pokemon list fetching error";
+            $errorData['message'] = "Error while fetching pokemon list from pokeapi. Please try again with a number positive or null.";
+            return $this->render('index.html.php', array(
+                'jsonArray' => $errorData
+            ));
+        }else{
+            return $this->render('index.html.php', array(
+                'jsonArray' => $this->getAllPokemonBasicData($pageId)
+            ));
+        }
     }
     
     public function renderPokemonBasicInformations($id)
     {
-        if($id == 0){
-            echo "No pokemon chosen : abortion of loading pokemon Data";
-        }else{
-            $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
-            return $this->render('index.html.php', array(
-                'jsonArray' => $jsonData
-            ));
-        }
+        $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
+        return $this->render('index.html.php', array(
+            'jsonArray' => $jsonData
+        ));
     }
 }
 ?>

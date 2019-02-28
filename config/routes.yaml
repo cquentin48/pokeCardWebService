@@ -11,7 +11,7 @@ pokemonBasicInfos:
     defaults:
         id: 0
 fetchList:
-    path: /pokemonList/{pageId}
+    path: /pokemonlist/{pageId}
     controller: App\Controller\PokemonController::fetchPokedexPage
     defaults:
         pageId: 0
