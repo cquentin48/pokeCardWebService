@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PokemonController extends AbstractController
 {
-    private static $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
+    private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/?offset=";
+    private $limit = 20;
 
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
@@ -22,9 +23,9 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
-    function getAllPokemonBasicData()
+    function getAllPokemonBasicData($pageId)
     {
-        $response = file_get_contents('https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=0&limit=20');
+        $response = file_get_contents($this->basicPokemonURL.($pageId*20)."&limit=$this->limit");
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
@@ -41,21 +42,23 @@ class PokemonController extends AbstractController
         }
         return $returnedData;
     }
+
+    function fetchPokedexPage($pageId){
+        return $this->render('index.html.php', array(
+            'jsonArray' => $this->getAllPokemonBasicData($pageId)
+        ));
+    }
     
     public function renderPokemonBasicInformations($id)
     {
         if($id == 0){
-			$returnedData = $this->getAllPokemonBasicData();
-            return $this->render('index.html.php', array(
-                'jsonArray' => $returnedData
-            ));
+            echo "No pokemon chosen : abortion of loading pokemon Data";
         }else{
             $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
             return $this->render('index.html.php', array(
                 'jsonArray' => $jsonData
             ));
         }
-
     }
 }
 ?>
