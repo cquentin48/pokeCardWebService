@@ -5,6 +5,7 @@ use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/config/bootstrap.php';
+require_once '../vendor/autoload.php';
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);

@@ -1,0 +1,38 @@
+<?php
+namespace App\Controller;
+
+use App\Entity\Post;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
+
+require '../../vendor/autoload.php';
+class FirebaseController extends AbstractController
+{
+    private $jsonFileContent;
+    private $factory;
+    private $database;
+
+    private function initFactory(){
+        $this->jsonFileContent = ServiceAccount::fromJsonFile('../secretJSONData/pokeapi-1541497105412-186297ab70cc.json');
+        $this->factory = (new Factory)
+        ->withServiceAccount($this->jsonFileContent)
+        // The following line is optional if the project id in your credentials file
+        // is identical to the subdomain of your Firebase project. If you need it,
+        // make sure to replace the URL with the URL of your project.
+        ->withDatabaseUri('https://pokeapi-1541497105412.firebaseio.com/')
+        ->create();
+    }
+
+    private function initDatabase(){
+        $database = $this->factory->getDatabase();
+    }
+
+    function __construct(){
+        $this->initFactory();
+        $this->initDatabase();
+    }
+}
+?>
