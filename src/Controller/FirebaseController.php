@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-require '../../vendor/autoload.php';
+require_once dirname(dirname(__DIR__)).'\vendor\autoload.php';
 class FirebaseController extends AbstractController
 {
     private $jsonFileContent;
@@ -16,7 +16,7 @@ class FirebaseController extends AbstractController
     private $database;
 
     private function initFactory(){
-        $this->jsonFileContent = ServiceAccount::fromJsonFile('../secretJSONData/pokeapi-1541497105412-186297ab70cc.json');
+        $this->jsonFileContent = ServiceAccount::fromJsonFile(dirname(__DIR__).'/secretJSONData/pokeapi-1541497105412-186297ab70cc.json');
         $this->factory = (new Factory)
         ->withServiceAccount($this->jsonFileContent)
         // The following line is optional if the project id in your credentials file
