@@ -2,13 +2,14 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-require_once dirname(dirname(__DIR__)).'\vendor\autoload.php';
+require_once dirname(__DIR__).'\vendor\autoload.php';
 class FirebaseController extends AbstractController
 {
     private $jsonFileContent;
@@ -27,12 +28,18 @@ class FirebaseController extends AbstractController
     }
 
     private function initDatabase(){
-        $database = $this->factory->getDatabase();
+        $this->database = $this->factory->getDatabase();
     }
 
     function __construct(){
         $this->initFactory();
         $this->initDatabase();
     }
+
+    public function insert(){
+        $this->database->getReference()->getChild("Achievement")->set("jklj");
+    }
 }
+$firebase = new FirebaseController();
+$firebase->insert();
 ?>
