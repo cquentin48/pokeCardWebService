@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-require_once dirname(__DIR__).'\vendor\autoload.php';
+require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 class FirebaseController extends AbstractController
 {
     private $jsonFileContent;
