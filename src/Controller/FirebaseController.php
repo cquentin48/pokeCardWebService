@@ -36,10 +36,9 @@ class FirebaseController extends AbstractController
         $this->initDatabase();
     }
 
-    public function insert(){
+    public function insert($id){
         $this->database->getReference()->getChild("Achievement")->set("jklj");
+        echo "Créé";
     }
 }
-$firebase = new FirebaseController();
-$firebase->insert();
 ?>

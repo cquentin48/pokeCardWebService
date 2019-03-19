@@ -5,8 +5,8 @@ controllers:
 index:
     path: /
     controller: App\Controller\DefaultController::index
-pokemonBasicInfos:
-    path: /pokemon/{id}
-    controller: App\Controller\PokemonController::renderPokemonBasicInformations
+loadingData:
+    path: /loadingData/{id}
+    controller : App\Controller\FirebaseController::insert
     defaults:
         id: 0
