@@ -15,6 +15,7 @@ class FirebaseController extends AbstractController
     private $jsonFileContent;
     private $factory;
     private $database;
+    private $references;
 
     private function initFactory(){
         $this->jsonFileContent = ServiceAccount::fromJsonFile(dirname(__DIR__).'/secretJSONData/pokeapi-1541497105412-186297ab70cc.json');
@@ -27,18 +28,31 @@ class FirebaseController extends AbstractController
         ->create();
     }
 
+    public function getReference($refId){
+        return $this->$references[$refId];
+    }
+
     private function initDatabase(){
         $this->database = $this->factory->getDatabase();
+    }
+
+    public function isChildEmpty($ref){
+        return $ref->getValue() == null;
     }
 
     function __construct(){
         $this->initFactory();
         $this->initDatabase();
+        $this->initFirebaseReferences();
     }
 
-    public function insert($id){
-        $this->database->getReference()->getChild("Achievement")->set("jklj");
-        echo "Créé";
+    private function initFirebaseReferences(){
+        $references = [];
+        $references['users'] = $this->database()->getChild('users');
+    }
+
+    public function insertIntoDatabase($ref, $data){
+        $ref->set($data);
     }
 }
 ?>

@@ -5,8 +5,8 @@ controllers:
 index:
     path: /
     controller: App\Controller\DefaultController::index
-loadingData:
-    path: /loadingData/{id}
-    controller : App\Controller\FirebaseController::insert
+loadUserFriendList:
+    path: /loadUserFriendList/{userId}
+    controller : App\Controller\UserDatabaseController::loadFriendList
     defaults:
-        id: 0
+        userId: "No user Id"
