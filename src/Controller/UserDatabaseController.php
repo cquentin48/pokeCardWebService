@@ -35,7 +35,7 @@ class UserDatabaseController extends AbstractController
         }else{
             return $this->render('index.html.php', array(
                 'jsonArray' => loadUserFriendsId($userId)
-            ))
+            ));
         }
     }
 
