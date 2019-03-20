@@ -48,7 +48,7 @@ class FirebaseController extends AbstractController
 
     private function initFirebaseReferences(){
         $references = [];
-        $references['users'] = $this->database()->getChild('users');
+        $references['users'] = $this->database()->getSnapshot('users');
     }
 
     public function insertIntoDatabase($ref, $data){

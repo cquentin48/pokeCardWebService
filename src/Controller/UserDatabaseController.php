@@ -18,17 +18,17 @@ class UserDatabaseController extends AbstractController
         $this->firebaseInstance = new FirebaseController();
     }
 
-    private function loadFriendList($userId){
-        /*$returnedArray = [];
-        if($userId == "No user Id"){*/
-            $returnedArray['Title'] = "Error";
-            $returnedArray['Message'] = "No user chosen";
+    public function loadFriendList($userId){
+        $returnedArray = [];
+        if($userId == "No user Id"){
+            $returnedArray['title'] = "Error";
+            $returnedArray['message'] = "No user chosen";
             return $this->render('index.html.php',array(
                 'jsonArray' => $returnedArray
-            ));/*
+            ));
         }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->getReference('user')->getChild($userId)->getChild('friendsList'))){
-            $returnedArray['Title'] = "Information";
-            $returnedArray['Message'] = "No user friend";
+            $returnedArray['title'] = "Information";
+            $returnedArray['message'] = "No user friend";
             return $this->render('index.html.php',array(
                 'jsonArray' => $returnedArray
             ));
@@ -36,7 +36,7 @@ class UserDatabaseController extends AbstractController
             return $this->render('index.html.php', array(
                 'jsonArray' => loadUserFriendsId($userId)
             ));
-        }*/
+        }
     }
 
     private function loadUserFriendsId($userId){
