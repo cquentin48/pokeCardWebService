@@ -33,8 +33,9 @@ class UserDatabaseController extends AbstractController
                 'jsonArray' => $returnedArray
             ));
         }else{
+            $returnedArray['returnedData'] = $this->loadUserFriendsId($userId);
             return $this->render('index.html.php', array(
-                'jsonArray' => $this->loadUserFriendsId($userId)
+                'jsonArray' => $returnedArray
             ));
         }
     }
@@ -43,7 +44,7 @@ class UserDatabaseController extends AbstractController
         $friendListArray = [];
         $friendList = $this->firebaseInstance->returnReference("users/$userId/friendsList")->getSnapshot()->getValue();
         foreach($friendList as $singleFriend){
-            array_push($friendListArray['friendsList'],$this->loadUserNameAndSprite($singleFriend));
+            array_push($friendListArray,$this->loadUserNameAndSprite($singleFriend));
         }
         return $friendListArray;
     }
