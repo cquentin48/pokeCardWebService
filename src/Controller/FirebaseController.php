@@ -37,7 +37,7 @@ class FirebaseController extends AbstractController
     }
 
     public function isChildEmpty($ref){
-        return $ref->getSnapshot()->exists();
+        return !($ref->getSnapshot()->exists());
     }
 
     public function returnReference($string){
