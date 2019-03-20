@@ -27,7 +27,7 @@ class PokemonController extends AbstractController
 
     function getAllPokemonBasicData($pageId)
     {
-        $response = file_get_contents($listURL);
+        $response = file_get_contents($pageId);
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
