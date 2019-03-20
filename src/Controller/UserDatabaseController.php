@@ -50,7 +50,7 @@ class UserDatabaseController extends AbstractController
 
     private function loadUserNameAndSprite($userId){
         $userData = [];
-        $rawData = $this->firebaseInstance->getReference("users/$userId")->getSnaphot()->getValue();
+        $rawData = $this->firebaseInstance->returnReference("users/$userId")->getSnapshot()->getValue();
         $userData['username'] = $rawData['username'];
         $userData['sprite'] = $rawData['avatarImage'];
     }
