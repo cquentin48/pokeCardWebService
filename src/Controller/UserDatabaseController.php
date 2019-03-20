@@ -26,7 +26,8 @@ class UserDatabaseController extends AbstractController
             return $this->render('index.html.php',array(
                 'jsonArray' => $returnedArray
             ));
-        }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->getReference('users'))){
+        }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->getReference('users')->
+                 getSnapshot()->getChild($userId)->getSnapshot()->getChild('userFriendList'))){
             $returnedArray['title'] = "Information";
             $returnedArray['message'] = "No user friend";
             return $this->render('index.html.php',array(
