@@ -12,7 +12,7 @@ use Kreait\Firebase\ServiceAccount;
 require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 class UserDatabaseController extends AbstractController
 {
-    private $firebaseInstance;
+    public $firebaseInstance;
 
     function __construct(){
         $this->firebaseInstance = new FirebaseController();
@@ -26,7 +26,7 @@ class UserDatabaseController extends AbstractController
             return $this->render('index.html.php',array(
                 'jsonArray' => $returnedArray
             ));
-        }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->getReference('user')->getChild($userId)->getChild('friendsList'))){
+        }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->getReference('users'))){
             $returnedArray['title'] = "Information";
             $returnedArray['message'] = "No user friend";
             return $this->render('index.html.php',array(
@@ -49,9 +49,11 @@ class UserDatabaseController extends AbstractController
 
     private function loadUserNameAndSprite($userId){
         $userData = [];
-        $rawData = $this->firebaseInstance->getReference('user')->getChild($userId)->getValue();
+        $rawData = $this->firebaseInstance->getReference('users')->getChild($userId)->getValue();
         $userData['userName'] = $rawData['username'];
         $userData['sprite'] = $rawData['avatarImage'];
     }
 }
+$user = new UserDatabaseController();
+print_r($user->firebaseInstance->getReference('users')->getSnapshot()->hasChild());
 ?>

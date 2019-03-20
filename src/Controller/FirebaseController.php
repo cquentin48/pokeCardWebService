@@ -29,7 +29,7 @@ class FirebaseController extends AbstractController
     }
 
     public function getReference($refId){
-        return $this->$references[$refId];
+        return $this->references[$refId];
     }
 
     private function initDatabase(){
@@ -48,7 +48,7 @@ class FirebaseController extends AbstractController
 
     private function initFirebaseReferences(){
         $references = [];
-        $references['users'] = $this->database()->getSnapshot('users');
+        $references['users'] = $this->database->getReference('users')->getSnapshot();
     }
 
     public function insertIntoDatabase($ref, $data){
