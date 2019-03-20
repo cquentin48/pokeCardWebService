@@ -54,6 +54,4 @@ class UserDatabaseController extends AbstractController
         $userData['sprite'] = $rawData['avatarImage'];
     }
 }
-$user = new UserDatabaseController();
-print_r($user->firebaseInstance->getReference('users')->getSnapshot()->hasChild());
 ?>
