@@ -41,7 +41,7 @@ class UserDatabaseController extends AbstractController
 
     private function loadUserFriendsId($userId){
         $friendListArray = [];
-        $friendList = $this->firebaseInstance->getReference("users/$userId/friendsList")->getSnapshot()->getValue();
+        $friendList = $this->firebaseInstance->returnReference("users/$userId/friendsList")->getSnapshot()->getValue();
         foreach($friendList as $singleFriend){
             array_push($friendListArray,loadUserNameAndSprite($singleFriend['userId']));
         }
