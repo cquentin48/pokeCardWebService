@@ -53,6 +53,7 @@ class UserDatabaseController extends AbstractController
         $rawData = $this->firebaseInstance->returnReference("users/$userId")->getSnapshot()->getValue();
         $userData['username'] = $rawData['username'];
         $userData['sprite'] = $rawData['avatarImage'];
+        return $userData;
     }
 }
 ?>
