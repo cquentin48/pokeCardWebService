@@ -41,6 +41,10 @@ class FirebaseController extends AbstractController
         return $ref->exists();
     }
 
+    public function returnReference($string){
+        return $this->database->getReference($string);
+    }
+
     function __construct(){
         $this->initFactory();
         $this->initDatabase();
