@@ -3942,17 +3942,17 @@
     },
     {
         "name": "symfony/maker-bundle",
-        "version": "v1.9.0",
-        "version_normalized": "1.9.0.0",
+        "version": "v1.11.1",
+        "version_normalized": "1.11.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/maker-bundle.git",
-            "reference": "e873047b6022a0343c9354f65d5d47b9e351dd53"
+            "reference": "2ba2b563a6ca17cd7723b451b9ed4702ece9d8ae"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/e873047b6022a0343c9354f65d5d47b9e351dd53",
-            "reference": "e873047b6022a0343c9354f65d5d47b9e351dd53",
+            "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/2ba2b563a6ca17cd7723b451b9ed4702ece9d8ae",
+            "reference": "2ba2b563a6ca17cd7723b451b9ed4702ece9d8ae",
             "shasum": ""
         },
         "require": {
@@ -3976,7 +3976,7 @@
             "symfony/process": "^3.4|^4.0",
             "symfony/yaml": "^3.4|^4.0"
         },
-        "time": "2018-11-03T18:25:11+00:00",
+        "time": "2018-12-20T19:51:03+00:00",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -5424,6 +5424,64 @@
         ],
         "description": "Symfony SwiftmailerBundle",
         "homepage": "http://symfony.com"
+    },
+    {
+        "name": "symfony/templating",
+        "version": "v4.2.1",
+        "version_normalized": "4.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/templating.git",
+            "reference": "249b9dec50c98ef7cb4d4967888b91f095e9a15b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/templating/zipball/249b9dec50c98ef7cb4d4967888b91f095e9a15b",
+            "reference": "249b9dec50c98ef7cb4d4967888b91f095e9a15b",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3",
+            "symfony/polyfill-ctype": "~1.8"
+        },
+        "require-dev": {
+            "psr/log": "~1.0"
+        },
+        "suggest": {
+            "psr/log-implementation": "For using debug logging in loaders"
+        },
+        "time": "2018-11-20T16:22:05+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Templating\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Templating Component",
+        "homepage": "https://symfony.com"
     },
     {
         "name": "symfony/test-pack",
