@@ -22,7 +22,7 @@ class PokemonController extends AbstractController
         $jsonOutput = array();
         $jsonOutput['id'] = $json['id'];
         $jsonOutput['height'] = $json['height'];
-        $jsonOutput['sprites'] = $json['sprites'];
+        $jsonOutput['sprites'] = $json['sprites']['front_default'];
         $jsonOutput['types'] = $json['types'];
         $jsonOutput['weight'] = $json['weight'];
         return $jsonOutput;
