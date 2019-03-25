@@ -23,9 +23,17 @@ class PokemonController extends AbstractController
         $jsonOutput['id'] = $json['id'];
         $jsonOutput['height'] = $json['height'];
         $jsonOutput['sprites'] = $json['sprites']['front_default'];
-        $jsonOutput['types'] = $json['types'];
+        $jsonOutput['types'] = $this->loadPokemonType($json['types']);
         $jsonOutput['weight'] = $json['weight'];
         return $jsonOutput;
+    }
+
+    private function loadPokemonType($rawData){
+        $pokemonTypeArray = [];
+        foreach($rawData as $singleType){
+            array_push($pokemonTypeArray,$singleType['type']['name']);
+        }
+        return $pokemonTypeArray;
     }
 
     /**
