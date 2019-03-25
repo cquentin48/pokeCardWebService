@@ -21,10 +21,10 @@ class PokemonController extends AbstractController
         $json = json_decode($jsonRawData, true);
         $jsonOutput = array();
         $jsonOutput['id'] = $json['id'];
-        $jsonOutput['height'] = $json['species'];
+        $jsonOutput['height'] = $json['height'];
         $jsonOutput['sprites'] = $json['sprites'];
         $jsonOutput['types'] = $json['types'];
-        $jsonOutput['weight'] = $json['species'];
+        $jsonOutput['weight'] = $json['weight'];
         return $jsonOutput;
     }
 
@@ -33,7 +33,8 @@ class PokemonController extends AbstractController
      */
     private function loadPokemonInfos($adress, $pokemonId){
         $rawData = $this->loadJSONData($adress, $pokemonId);
-        return $this->loadPokemonLocalization($rawData);
+        $this->loadPokemonLocalization($rawData);
+        return $rawData;
     }
 
     /**
