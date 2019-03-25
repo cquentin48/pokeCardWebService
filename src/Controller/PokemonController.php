@@ -8,10 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PokemonController extends AbstractController
 {
-    private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
-    private $normalLimit = 20;
-    private $lastLimit = 4;
-    private $lastOffset = 960;
+    private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/?offset=";
+    private $limit = 20;
 
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
@@ -27,7 +25,7 @@ class PokemonController extends AbstractController
 
     function getAllPokemonBasicData($pageId)
     {
-        $response = file_get_contents($pageId);
+        $response = file_get_contents($this->basicPokemonURL.($pageId*20)."&limit=$this->limit");
         $pokemons = array();
         $pokemonSprites = array();
         $returnedData = array();
@@ -39,25 +37,33 @@ class PokemonController extends AbstractController
             $returnedPokemonData = array();
             $response = file_get_contents($result['url']);
             $returnedJSONData = json_decode($response,true);
-            $returnedPokemonData['name'] = $result['name'];
             $returnedPokemonData['sprite'] = $returnedJSONData['sprites']['front_default'];
+            $response = file_get_contents($returnedJSONData['species']['url']);
+            $secondReturnedJSONData = json_decode($response,true);
+            $returnedPokemonData['name'] = $secondReturnedJSONData['names'][6]['name'];
             array_push($returnedData['pokemonList'], $returnedPokemonData);
         }
         return $returnedData;
+    }
+
+    function fetchPokedexPage($pageId){
+        if($pageId<0){
+            $errorData = [];
+            $errorData['title'] = "Pokemon list fetching error";
+            $errorData['message'] = "Error while fetching pokemon list from pokeapi. Please try again with a number positive or null.";
+            return $this->render('index.html.php', array(
+                'jsonArray' => $errorData
+            ));
+        }else{
+            return $this->render('index.html.php', array(
+                'jsonArray' => $this->getAllPokemonBasicData($pageId)
+            ));
+        }
     }
     
     public function renderPokemonBasicInformations($id)
     {
         $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
-        return $this->render('index.html.php', array(
-            'jsonArray' => $jsonData
-        ));
-    }
-
-    public function renderPokemonList($pageId){
-        $offset = $pageId*($this->normalLimit);
-        $limit = ($offset==$this->lastOffset)?$this->lastOffset:$this->normalLimit;
-        $jsonData = $this->getAllPokemonBasicData("$this->basicPokemonURL?offset=$offset&limit=$limit");
         return $this->render('index.html.php', array(
             'jsonArray' => $jsonData
         ));

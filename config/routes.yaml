@@ -10,8 +10,8 @@ pokemonBasicInfos:
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
-pokemonList:
-    path: /pokemonList/{pageId}
-    controller: App\Controller\PokemonController::renderPokemonList
+fetchList:
+    path: /pokemonlist/{pageId}
+    controller: App\Controller\PokemonController::fetchPokedexPage
     defaults:
-        url: 0
+        pageId: 0
