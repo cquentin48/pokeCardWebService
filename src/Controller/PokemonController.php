@@ -9,18 +9,39 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PokemonController extends AbstractController
 {
     private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/?offset=";
+    private $pokemonLocalizationURL = "https://pokeapi.co/api/v2/pokemon-species/";
     private $limit = 20;
 
+    /**
+     * Load main infos for the pokemon view fragment
+     */
     private function loadJSONData($adress, $pokemonId){
         $rawJSONPage = $adress.$pokemonId."/";
         $jsonRawData = file_get_contents($rawJSONPage);
         $json = json_decode($jsonRawData, true);
         $jsonOutput = array();
         $jsonOutput['id'] = $json['id'];
-        $jsonOutput['species'] = $json['species'];
+        $jsonOutput['height'] = $json['species'];
         $jsonOutput['sprites'] = $json['sprites'];
         $jsonOutput['types'] = $json['types'];
+        $jsonOutput['weight'] = $json['species'];
         return $jsonOutput;
+    }
+
+    /**
+     * Load pokemon infos for the pokemon view fragment
+     */
+    private function loadPokemonInfos($adress, $pokemonId){
+        $rawData = $this->loadJSONData($adress, $pokemonId);
+        return $this->loadPokemonLocalization($rawData);
+    }
+
+    /**
+     * Load pokemon name in the chosen language
+     */
+    private function loadPokemonLocalization($rawData){
+        $localizationRawData = json_decode(file_get_contents($this->pokemonLocalizationURL.$rawData['id']),true);
+        $rawData['name'] = $localizationRawData['names'][6]['name'];
     }
 
     function getAllPokemonBasicData($pageId)
@@ -63,7 +84,7 @@ class PokemonController extends AbstractController
     
     public function renderPokemonBasicInformations($id)
     {
-        $jsonData = $this->loadJSONData("https://pokeapi.co/api/v2/pokemon/",$id);
+        $jsonData = $this->loadPokemonInfos("https://pokeapi.co/api/v2/pokemon/",$id);
         return $this->render('index.html.php', array(
             'jsonArray' => $jsonData
         ));
