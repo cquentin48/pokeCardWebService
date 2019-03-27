@@ -68,6 +68,7 @@ class PokemonController extends AbstractController
             $response = file_get_contents($result['url']);
             $returnedJSONData = json_decode($response,true);
             $returnedPokemonData['sprite'] = $returnedJSONData['sprites']['front_default'];
+            $returnedPokemonData['id'] = $returnedJSONData['id'];
             $response = file_get_contents($returnedJSONData['species']['url']);
             $secondReturnedJSONData = json_decode($response,true);
             $returnedPokemonData['name'] = $secondReturnedJSONData['names'][6]['name'];
