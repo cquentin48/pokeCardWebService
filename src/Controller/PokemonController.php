@@ -41,7 +41,9 @@ class PokemonController extends AbstractController
      */
     private function loadPokemonInfos($adress, $pokemonId){
         $rawData = $this->loadJSONData($adress, $pokemonId);
-        $rawData['name'] = $this->loadPokemonLocalization($rawData);
+        $localizationData = $this->loadPokemonLocalization($rawData);
+        $rawData['name'] = $localizationData['name'];
+        $rawData['pokedexEntry'] = $localizationData['pokedexEntry'];
         return $rawData;
     }
 
@@ -50,7 +52,9 @@ class PokemonController extends AbstractController
      */
     private function loadPokemonLocalization($rawData){
         $localizationRawData = json_decode(file_get_contents($this->pokemonLocalizationURL.$rawData['id']),true);
-        return $localizationRawData['names'][6]['name'];
+        $localizationData['name'] = $localizationRawData['names'][6]['name'];
+        $localizationData['pokedexEntry'] = $localizationRawData['flavor_text_entries'][5]['flavor_text'];
+        return $localizationData;
     }
 
     function getAllPokemonBasicData($pageId)
