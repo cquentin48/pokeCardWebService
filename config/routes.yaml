@@ -15,3 +15,6 @@ fetchList:
     controller: App\Controller\PokemonController::fetchPokedexPage
     defaults:
         pageId: 0
+loadTypes:
+    path: /types/all
+    controller: App\Controller\PokemonController::loadTypes

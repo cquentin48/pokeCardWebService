@@ -10,6 +10,7 @@ class PokemonController extends AbstractController
 {
     private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/?offset=";
     private $pokemonLocalizationURL = "https://pokeapi.co/api/v2/pokemon-species/";
+    private $pokemonTypesURL = "https://pokeapi.co/api/v2/type/";
     private $limit = 20;
 
     /**
@@ -26,6 +27,20 @@ class PokemonController extends AbstractController
         $jsonOutput['types'] = $this->loadPokemonType($json['types']);
         $jsonOutput['weight'] = $json['weight'];
         return $jsonOutput;
+    }
+
+    /**
+     * Load all types in a table and display it into a table array
+     */
+    public function loadTypes(){
+        $rawJSONPage = json_decode(file_get_contents($this->pokemonTypesURL),true);
+        $arrayType = [];
+        foreach($rawJSONPage['results'] as $singleType){
+            array_push($arrayType, $this->loadLocalizedType($singleType['url']));
+        }
+        return $this->render('index.html.php', array(
+            'jsonArray' => $arrayType
+        ));
     }
 
     /**
