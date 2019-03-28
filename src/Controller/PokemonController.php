@@ -38,8 +38,8 @@ class PokemonController extends AbstractController
         $arrayType = [];
         $arrayType['typeList'] = [];
         foreach($rawJSONPage['results'] as $singleType){
-            if($singleType['name'] != "unknown" && $singleType['name'] != 'shadow'){
-                array_push($arrayType['typeList'], $this->loadLocalizedType($singleType['url']));
+            if($singleType["name"] != "unknown" && $singleType["name"] != "shadow"){
+                array_push($arrayType["typeList"], $this->loadLocalizedType($singleType["url"]));
             }
         }
         return $this->render('index.html.php', array(
@@ -52,13 +52,16 @@ class PokemonController extends AbstractController
      */
     private function loadPokemonType($typeURL){
         $pokemonTypeArray = [];
-        foreach($typeURL as $key =>$singleType){
-                array_push($pokemonTypeArray,$this->loadLocalizedType($singleType['type']['url']));
+        foreach($typeURL as $singleType){
+            $returnData = $this->loadLocalizedType($singleType['type']['url']);
+                array_push($pokemonTypeArray,$returnData);
             }
-        }
         return $pokemonTypeArray;
     }
 
+    /**
+     * Return the french localized word for the type
+     */
     private function loadLocalizedType($rawData){
         $typeContent = file_get_contents($rawData);
         $jsonDecodedData = json_decode($typeContent,true);
