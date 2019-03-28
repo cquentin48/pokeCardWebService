@@ -28,12 +28,22 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
-    private function loadPokemonType($rawData){
+    /**
+     * Load Pokemon type
+     */
+    private function loadPokemonType($typeURL){
         $pokemonTypeArray = [];
-        foreach($rawData as $singleType){
-            array_push($pokemonTypeArray,$singleType['type']['name']);
+        foreach($typeURL as $singleType){
+            $localizedType = $this->loadLocalizedType($singleType['type']['url']);
+            array_push($pokemonTypeArray,$localizedType);
         }
         return $pokemonTypeArray;
+    }
+
+    private function loadLocalizedType($rawData){
+        $typeContent = file_get_contents($rawData);
+        $jsonDecodedData = json_decode($typeContent,true);
+        return $jsonDecodedData['names'][2]['name'];
     }
 
     /**
@@ -43,7 +53,7 @@ class PokemonController extends AbstractController
         $rawData = $this->loadJSONData($adress, $pokemonId);
         $localizationData = $this->loadPokemonLocalization($rawData);
         $rawData['name'] = $localizationData['name'];
-        $rawData['pokedexEntry'] = $localizationData['pokedexEntry'];
+        $rawData['pokedexEntry'] = str_replace("\n", " ", $localizationData['pokedexEntry']);
         return $rawData;
     }
 
