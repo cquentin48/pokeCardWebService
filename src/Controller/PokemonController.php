@@ -48,9 +48,11 @@ class PokemonController extends AbstractController
      */
     private function loadPokemonType($typeURL){
         $pokemonTypeArray = [];
-        foreach($typeURL as $singleType){
+        foreach($typeURL as $key =>$singleType){
             $localizedType = $this->loadLocalizedType($singleType['type']['url']);
-            array_push($pokemonTypeArray,$localizedType);
+            if($singleType['name'] != "unkown" && $singleType['name'] != 'shadow'){
+                array_push($pokemonTypeArray,$localizedType);
+            }
         }
         return $pokemonTypeArray;
     }
