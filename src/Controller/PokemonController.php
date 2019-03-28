@@ -29,14 +29,18 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
+
     /**
      * Load all types in a table and display it into a table array
      */
     public function loadTypes(){
         $rawJSONPage = json_decode(file_get_contents($this->pokemonTypesURL),true);
         $arrayType = [];
+        $arrayType['typeList'] = [];
         foreach($rawJSONPage['results'] as $singleType){
-            array_push($arrayType, $this->loadLocalizedType($singleType['url']));
+            if($singleType['name'] != "unknown" && $singleType['name'] != 'shadow'){
+                array_push($arrayType['typeList'], $this->loadLocalizedType($singleType['url']));
+            }
         }
         return $this->render('index.html.php', array(
             'jsonArray' => $arrayType
@@ -49,9 +53,7 @@ class PokemonController extends AbstractController
     private function loadPokemonType($typeURL){
         $pokemonTypeArray = [];
         foreach($typeURL as $key =>$singleType){
-            $localizedType = $this->loadLocalizedType($singleType['type']['url']);
-            if($singleType['name'] != "unkown" && $singleType['name'] != 'shadow'){
-                array_push($pokemonTypeArray,$localizedType);
+                array_push($pokemonTypeArray,$this->loadLocalizedType($singleType['type']['url']));
             }
         }
         return $pokemonTypeArray;
