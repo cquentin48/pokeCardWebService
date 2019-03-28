@@ -95,7 +95,7 @@ class PokemonController extends AbstractController
     private function loadPokemonLocalizedPokedexEntry($nameArray){
         foreach($nameArray as $singleName){
             if($singleName['language']['name'] == "fr"){
-                return $singleName['flavoured_text'];
+                return $singleName['flavor_text'];
             }
         }
     }
