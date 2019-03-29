@@ -37,6 +37,7 @@ class PokemonController extends AbstractController
         $rawJSONPage = json_decode(file_get_contents($this->pokemonTypesURL),true);
         $arrayType = [];
         $arrayType['typeList'] = [];
+        array_push($arrayType['typeList'],"Choix du type");
         foreach($rawJSONPage['results'] as $singleType){
             if($singleType["name"] != "unknown" && $singleType["name"] != "shadow"){
                 array_push($arrayType["typeList"], $this->loadLocalizedType($singleType["url"]));
