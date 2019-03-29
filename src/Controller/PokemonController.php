@@ -29,6 +29,48 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
+    private function loadAllPokemonFromType($typeId){
+        $pokemonIdArray = [];
+        if($typeId>=1){
+            $data = json_decode(file_get_contents($this->pokemonTypeURL.$typeId,true));
+            foreach($data['pokemon'] as $key => $singlePokemon){
+                array_push($pokemonIdArray,$key);
+            }  
+        }
+        return $pokemonIdArray
+    }
+
+    private function generatePokemonList($firstTypeId, $secondTypeId){
+        $pokemonIdArray = [];
+        $pokemonIdArray['firstType'] = $this->loadAllPokemonFromType($firstTypeId);
+        $pokemonIdArray['secondType'] = $this->loadAllPokemonFromType($secondTypeId);
+        $pokemonList = [];
+        if(sizeof($pokemonIdArray['secondType']>0)){
+            foreach($pokemonIdArray['firstType'] as $singlePokemonId){
+                if(in_array($singlePokemonId, $pokemonIdArray['secondType'])){
+                    array_push($pokemonList)
+                }
+            }
+        }else{
+            $pokemonList = $pokemonIdArray['firstType'];
+        }
+        return $pokemonList;
+    }
+
+    public function craftPokemon($firstTypeId, $secondTypeId){
+        $pokemonList = $this->generatePokemonList($firstTypeId, $secondTypeId);
+        return $this->render('index.html.php', array(
+            'jsonArray' => $this->loadSpriteAndName(rand(0,sizeof($pokemonList)-1))
+        ));
+    }
+
+    private function loadSpriteAndName($pokemonId){
+        $pokemonArray = [];
+        $spriteData = json_decode(file_get_contents($this->basicPokemonURL.$pokemonId),true);
+        $pokemonArray['sprite'] = $spriteData['sprites']['front_default'];
+        $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId,true))
+        $pokemonArray['name'] = ['names'][6]['name']
+    }
 
     /**
      * Load all types in a table and display it into a table array
