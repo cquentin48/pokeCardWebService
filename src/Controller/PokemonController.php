@@ -85,8 +85,19 @@ class PokemonController extends AbstractController
     private function loadPokemonLocalization($rawData){
         $localizationRawData = json_decode(file_get_contents($this->pokemonLocalizationURL.$rawData['id']),true);
         $localizationData['name'] = $localizationRawData['names'][6]['name'];
-        $localizationData['pokedexEntry'] = $localizationRawData['flavor_text_entries'][5]['flavor_text'];
+        $localizationData['pokedexEntry'] = $this->loadPokemonLocalizedPokedexEntry($localizationRawData['flavor_text_entries']);
         return $localizationData;
+    }
+
+    /**
+     * Load pokemon pokedex entry in french language
+     */
+    private function loadPokemonLocalizedPokedexEntry($nameArray){
+        foreach($nameArray as $singleName){
+            if($singleName['language']['name'] == "fr"){
+                return $singleName['flavor_text'];
+            }
+        }
     }
 
     function getAllPokemonBasicData($pageId)
