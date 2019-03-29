@@ -37,7 +37,7 @@ class PokemonController extends AbstractController
                 array_push($pokemonIdArray,$key);
             }  
         }
-        return $pokemonIdArray
+        return $pokemonIdArray;
     }
 
     private function generatePokemonList($firstTypeId, $secondTypeId){
@@ -48,7 +48,7 @@ class PokemonController extends AbstractController
         if(sizeof($pokemonIdArray['secondType']>0)){
             foreach($pokemonIdArray['firstType'] as $singlePokemonId){
                 if(in_array($singlePokemonId, $pokemonIdArray['secondType'])){
-                    array_push($pokemonList)
+                    array_push($pokemonList);
                 }
             }
         }else{
@@ -68,8 +68,8 @@ class PokemonController extends AbstractController
         $pokemonArray = [];
         $spriteData = json_decode(file_get_contents($this->basicPokemonURL.$pokemonId),true);
         $pokemonArray['sprite'] = $spriteData['sprites']['front_default'];
-        $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId,true))
-        $pokemonArray['name'] = ['names'][6]['name']
+        $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId,true));
+        $pokemonArray['name'] = ['names'][6]['name'];
     }
 
     /**
