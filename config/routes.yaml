@@ -18,3 +18,9 @@ fetchList:
 loadTypes:
     path: /types/all
     controller: App\Controller\PokemonController::loadTypes
+craftPokemon:
+    path: /craft/pokemon/{firstTypeId}/{secondTypeId}
+    controller: App\Controller\PokemonController::craftPokemon
+    defaults:
+        firstTypeId: 0
+        secondTypeId: 0

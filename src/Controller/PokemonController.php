@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PokemonController extends AbstractController
 {
     private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/?offset=";
+    private $basicPokemonURLWithoutOffset = "https://pokeapi.co/api/v2/pokemon/";
     private $pokemonLocalizationURL = "https://pokeapi.co/api/v2/pokemon-species/";
     private $pokemonTypesURL = "https://pokeapi.co/api/v2/type/";
     private $limit = 20;
@@ -29,6 +30,57 @@ class PokemonController extends AbstractController
         return $jsonOutput;
     }
 
+    private function loadAllPokemonFromType($typeId){
+        $pokemonIdArray = [];
+        if($typeId>=1){
+            $data = json_decode(file_get_contents($this->pokemonTypesURL.$typeId),true);
+            foreach($data['pokemon'] as $key => $singlePokemon){
+				$id = str_replace("/","",str_replace($this->basicPokemonURLWithoutOffset,"",$singlePokemon['pokemon']['url']));
+				if($id<900){
+					array_push($pokemonIdArray,$id);
+				}
+            }  
+        }
+        return $pokemonIdArray;
+    }
+
+    private function generatePokemonList($firstTypeId, $secondTypeId){
+        $pokemonIdArray = [];
+        $pokemonIdArray['firstType'] = $this->loadAllPokemonFromType($firstTypeId);
+        $pokemonIdArray['secondType'] = $this->loadAllPokemonFromType($secondTypeId);
+        $pokemonList = [];
+        if(sizeof($pokemonIdArray['secondType']) >= 1){
+            foreach($pokemonIdArray['firstType'] as $singlePokemonId){
+                if(in_array($singlePokemonId, $pokemonIdArray['secondType'])){
+                    array_push($pokemonList,$singlePokemonId);
+                }
+            }
+        }else{
+            $pokemonList = $pokemonIdArray['firstType'];
+        }
+		if(sizeof($pokemonList) == 0){
+			array_push($pokemonList,10);
+		}
+        return $pokemonList;
+    }
+
+    public function craftPokemon($firstTypeId, $secondTypeId){
+        $pokemonList = $this->generatePokemonList($firstTypeId, $secondTypeId);
+        $returnData = $this->loadSpriteAndName($pokemonList[rand(0,sizeof($pokemonList)-1)]);
+        return $this->render('index.html.php', array(
+            'jsonArray' => $returnData
+        ));
+    }
+
+    private function loadSpriteAndName($pokemonId){
+        $pokemonArray = [];
+        $spriteData = json_decode(file_get_contents($this->basicPokemonURLWithoutOffset.$pokemonId),true);
+        $pokemonArray['sprite'] = $spriteData['sprites']['front_default'];
+        $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId),true);
+        $pokemonArray['name'] = $nameData['names'][6]['name'];
+        $pokemonArray['id'] = $pokemonId;
+        return $pokemonArray;
+    }
 
     /**
      * Load all types in a table and display it into a table array
@@ -37,6 +89,7 @@ class PokemonController extends AbstractController
         $rawJSONPage = json_decode(file_get_contents($this->pokemonTypesURL),true);
         $arrayType = [];
         $arrayType['typeList'] = [];
+        array_push($arrayType['typeList'],"Choix du type");
         foreach($rawJSONPage['results'] as $singleType){
             if($singleType["name"] != "unknown" && $singleType["name"] != "shadow"){
                 array_push($arrayType["typeList"], $this->loadLocalizedType($singleType["url"]));
