@@ -78,6 +78,7 @@ class PokemonController extends AbstractController
         $pokemonArray['sprite'] = $spriteData['sprites']['front_default'];
         $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId),true);
         $pokemonArray['name'] = $nameData['names'][6]['name'];
+        $pokemonArray['id'] = $pokemonId;
         return $pokemonArray;
     }
 
