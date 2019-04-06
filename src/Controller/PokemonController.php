@@ -66,7 +66,7 @@ class PokemonController extends AbstractController
 
     public function craftPokemon($firstTypeId, $secondTypeId){
         $pokemonList = $this->generatePokemonList($firstTypeId, $secondTypeId);
-        $returnData = $this->loadSpriteAndName(rand($pokemonList[0],sizeof($pokemonList)-1));
+        $returnData = $this->loadSpriteAndName($pokemonList[rand(0,sizeof($pokemonList)-1)]);
         return $this->render('index.html.php', array(
             'jsonArray' => $returnData
         ));
