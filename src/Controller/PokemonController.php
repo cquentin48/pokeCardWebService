@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PokemonController extends AbstractController
 {
     private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/?offset=";
+    private $basicPokemonURLWithoutOffset = "https://pokeapi.co/api/v2/pokemon/";
     private $pokemonLocalizationURL = "https://pokeapi.co/api/v2/pokemon-species/";
     private $pokemonTypesURL = "https://pokeapi.co/api/v2/type/";
     private $limit = 20;
@@ -32,9 +33,12 @@ class PokemonController extends AbstractController
     private function loadAllPokemonFromType($typeId){
         $pokemonIdArray = [];
         if($typeId>=1){
-            $data = json_decode(file_get_contents($this->pokemonTypeURL.$typeId,true));
+            $data = json_decode(file_get_contents($this->pokemonTypesURL.$typeId),true);
             foreach($data['pokemon'] as $key => $singlePokemon){
-                array_push($pokemonIdArray,$key);
+				$id = str_replace("/","",str_replace($this->basicPokemonURLWithoutOffset,"",$singlePokemon['pokemon']['url']));
+				if($id<900){
+					array_push($pokemonIdArray,$id);
+				}
             }  
         }
         return $pokemonIdArray;
@@ -45,31 +49,36 @@ class PokemonController extends AbstractController
         $pokemonIdArray['firstType'] = $this->loadAllPokemonFromType($firstTypeId);
         $pokemonIdArray['secondType'] = $this->loadAllPokemonFromType($secondTypeId);
         $pokemonList = [];
-        if(sizeof($pokemonIdArray['secondType']>0)){
+        if(sizeof($pokemonIdArray['secondType']) >= 1){
             foreach($pokemonIdArray['firstType'] as $singlePokemonId){
                 if(in_array($singlePokemonId, $pokemonIdArray['secondType'])){
-                    array_push($pokemonList);
+                    array_push($pokemonList,$singlePokemonId);
                 }
             }
         }else{
             $pokemonList = $pokemonIdArray['firstType'];
         }
+		if(sizeof($pokemonList) == 0){
+			array_push($pokemonList,10);
+		}
         return $pokemonList;
     }
 
     public function craftPokemon($firstTypeId, $secondTypeId){
         $pokemonList = $this->generatePokemonList($firstTypeId, $secondTypeId);
+        $returnData = $this->loadSpriteAndName(rand($pokemonList[0],sizeof($pokemonList)-1));
         return $this->render('index.html.php', array(
-            'jsonArray' => $this->loadSpriteAndName(rand(0,sizeof($pokemonList)-1))
+            'jsonArray' => $returnData
         ));
     }
 
     private function loadSpriteAndName($pokemonId){
         $pokemonArray = [];
-        $spriteData = json_decode(file_get_contents($this->basicPokemonURL.$pokemonId),true);
+        $spriteData = json_decode(file_get_contents($this->basicPokemonURLWithoutOffset.$pokemonId),true);
         $pokemonArray['sprite'] = $spriteData['sprites']['front_default'];
-        $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId,true));
-        $pokemonArray['name'] = ['names'][6]['name'];
+        $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId),true);
+        $pokemonArray['name'] = $nameData['names'][6]['name'];
+        return $pokemonArray;
     }
 
     /**
