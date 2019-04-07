@@ -48,11 +48,12 @@ class UserDatabaseController extends AbstractController
      */
     private function importPokemonCollection($pokemonCollection){
         $pokemonList = [];
+        $pokemonList['collection'] = [];
         foreach($pokemonCollection as $pokemonId => $singlePokemon){
-            $pokemonList[$pokemonId] = [];
-            foreach($singlePokemon as $singleCreatedPokemon){
-                $pokemonList[$pokemonId] = $singleCreatedPokemon;
-                $pokemonList[$pokemonId]['sprite'] = $this->pokemonSpriteURL.$pokemonId.$this->pokemonSpriteExtension;
+            foreach($singlePokemon as $key=>$singleCreatedPokemon){
+                $data = $singleCreatedPokemon;
+                $data['sprite'] = $this->pokemonSpriteURL.$pokemonId.$this->pokemonSpriteExtension;
+                array_push($pokemonList['collection'],$data);
             }
         }
         return $pokemonList;

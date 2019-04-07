@@ -186,7 +186,7 @@ class PokemonController extends AbstractController
     private function getAllPokemonBasicData($pageId)
     {
         $response = file_get_contents($this->basicPokemonURL.
-                                      $this->limitAttribute.
+                                      $this->offsetAttribute.
                                       ($pageId*20).
                                       $this->limitAttribute.
                                       $this->limit);
