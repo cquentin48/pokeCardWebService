@@ -15,6 +15,11 @@ fetchList:
     controller: App\Controller\PokemonController::fetchPokedexPage
     defaults:
         pageId: 0
+loadPokemonList:
+    path: /users/{userId}/pokemonList
+    controller: App\Controller\UserDatabaseController::loadPokemonCollection
+    default:
+        userId: "No user Id"
 loadTypes:
     path: /types/all
     controller: App\Controller\PokemonController::loadTypes

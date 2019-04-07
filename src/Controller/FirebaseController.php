@@ -58,5 +58,9 @@ class FirebaseController extends AbstractController
     public function insertIntoDatabase($ref, $data){
         $ref->set($data);
     }
+
+    public function returnValueOfReference($reference){
+        return $this->returnReference($reference)->getSnapshot()->getValue();
+    }
 }
 ?>

@@ -13,6 +13,8 @@ require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 class UserDatabaseController extends AbstractController
 {
     public $firebaseInstance;
+    private $pokemonSpriteURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+    private $pokemonSpriteExtension = ".png";
 
     function __construct(){
         $this->firebaseInstance = new FirebaseController();
@@ -40,9 +42,24 @@ class UserDatabaseController extends AbstractController
         }
     }
 
+    public function loadPokemonCollection($userId){
+        $pokemonCollection = $this->firebaseInstance->returnValueOfReference("collections/$userId")
+        $pokemonList = [];
+        foreach($pokemonCollection as $pokemonId => $singlePokemon){
+            $pokemonList[$pokemonId] = [];
+            foreach($singlePokemon as $singleCreatedPokemon){
+                $pokemonList[$pokemonId] = $singleCreatedPokemon;
+                $pokemonList[$pokemonId]['sprite'] = $this->pokemonSpriteURL.$pokemonId.$this->pokemonSpriteExtension;
+            }
+        }
+        return $this->render('index.html.php', array(
+            'jsonArray' => $pokemonList
+        ));
+    }
+
     private function loadUserFriendsId($userId){
         $friendListArray = [];
-        $friendList = $this->firebaseInstance->returnReference("users/$userId/friendsList")->getSnapshot()->getValue();
+        $friendList = $this->firebaseInstance->returnValueOfReference("users/$userId/friendsList");
         foreach($friendList as $singleFriend){
             array_push($friendListArray,$this->loadUserNameAndSprite($singleFriend));
         }
@@ -51,7 +68,7 @@ class UserDatabaseController extends AbstractController
 
     private function loadUserNameAndSprite($userId){
         $userData = [];
-        $rawData = $this->firebaseInstance->returnReference("users/$userId")->getSnapshot()->getValue();
+        $rawData = $this->firebaseInstance->returnValueOfReference("users/$userId");
         $userData['username'] = $rawData['username'];
         $userData['sprite'] = $rawData['avatarImage'];
         return $userData;
