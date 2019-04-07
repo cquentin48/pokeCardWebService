@@ -8,12 +8,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JSONController extends AbstractController
 {
+    /**
+     * Render a json page into the browser with a json format
+     */
     public function renderJSONPage($jsonArray){
         return $this->render('index.html.php',array(
             'jsonArray' => $jsonArray
         ));
     }
 
+    /**
+     * Return an array which contains the error message
+     */
     private function generateErrorMessage($title, $errorMessage){
         $errorMessage = [];
         $errorMessage['title'] = $title;
@@ -21,9 +27,12 @@ class JSONController extends AbstractController
         return $errorMessage;
     }
 
+    /**
+     * Render an error message into the browser with a json format
+     */
     public function renderErrorMessage($title, $errorMessage){
         return $this->render('index.html.php',array(
-            'jsonArray' => $this->generateErrorMessage($title,$errorMessage);
+            'jsonArray' => $this->generateErrorMessage($title,$errorMessage)
         ));
     }
 }

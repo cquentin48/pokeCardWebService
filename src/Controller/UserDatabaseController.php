@@ -22,6 +22,9 @@ class UserDatabaseController extends AbstractController
         $this->jsonRender = new JSONController();
     }
 
+    /**
+     * Load users friends list
+     */
     public function loadFriendList($userId){
         $returnedArray = [];
         if($userId == "No user Id"){
@@ -33,10 +36,16 @@ class UserDatabaseController extends AbstractController
         }
     }
 
+    /**
+     * Load pokemon firebase collections from a chosen user
+     */
     public function loadPokemonCollection($userId){
         return $this->jsonRender->renderJSONPage($this->importPokemonCollection($this->firebaseInstance->returnValueOfReference("collections/$userId")));
     }
 
+    /**
+     * Import the pokemon collection from a user
+     */
     private function importPokemonCollection($pokemonCollection){
         $pokemonList = [];
         foreach($pokemonCollection as $pokemonId => $singlePokemon){
@@ -49,6 +58,9 @@ class UserDatabaseController extends AbstractController
         return $pokemonList;
     }
 
+    /**
+     * Load the userFriendsId
+     */
     private function loadUserFriendsId($userId){
         $friendListArray = [];
         $friendList = $this->firebaseInstance->returnValueOfReference("users/$userId/friendsList");
@@ -58,6 +70,9 @@ class UserDatabaseController extends AbstractController
         return $friendListArray;
     }
 
+    /**
+     * Return the username and sprite
+     */
     private function loadUserNameAndSprite($userId){
         $userData = [];
         $rawData = $this->firebaseInstance->returnValueOfReference("users/$userId");

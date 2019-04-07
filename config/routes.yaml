@@ -12,17 +12,13 @@ loadUserFriendList:
     controller : App\Controller\UserDatabaseController::loadFriendList
     defaults:
         userId: "No user Id"
-fetchList:
-    path: /pokemonlist/{pageId}
-    controller: App\Controller\PokemonController::fetchPokedexPage
-    defaults:
-        pageId: 0
-#PokemonController
 loadPokemonList:
     path: /users/{userId}/pokemonList
     controller: App\Controller\UserDatabaseController::loadPokemonCollection
-    default:
+    defaults:
         userId: "No user Id"
+
+#PokemonController
 loadTypes:
     path: /types/all
     controller: App\Controller\PokemonController::loadTypes
@@ -32,3 +28,13 @@ craftPokemon:
     defaults:
         firstTypeId: 0
         secondTypeId: 0
+fetchList:
+    path: /pokemonlist/{pageId}
+    controller: App\Controller\PokemonController::fetchPokedexPage
+    defaults:
+        pageId: 0
+pokemonBasicInfos:
+    path: /pokemon/{id}
+    controller: App\Controller\PokemonController::renderPokemonBasicInformations
+    defaults:
+        id: 0

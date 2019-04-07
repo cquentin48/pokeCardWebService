@@ -90,14 +90,16 @@ class PokemonController extends AbstractController
     public function craftPokemon($firstTypeId, $secondTypeId){
         if($firstTypeId<0 || $secondTypeId<0){
             return $this->jsonRenderer->renderErrorMessage("Error","A type id can't be null");
+        }else{
+            $pokemonList = $this->generateCommonList($this->loadTypeList($firstTypeId, $secondTypeId));
+            $returnData = $this->loadSpriteAndName($pokemonList[rand(0,sizeof($pokemonList)-1)]);
+            return $this->jsonRenderer->renderJSONPage($returnData);
         }
-        $pokemonList = $this->generateCommonList($this->loadTypeList($firstTypeId, $secondTypeId));
-        $returnData = $this->loadSpriteAndName($pokemonList[rand(0,sizeof($pokemonList)-1)]);
-        return $this->jsonRenderer->renderJSONPage($returnData);
     }
 
     /**
      * Load the sprite url and the pokemon name
+     * @param pokemonId id of the pokemon
      */
     private function loadSpriteAndName($pokemonId){
         $pokemonArray = [];
