@@ -26,14 +26,5 @@ class JSONController extends AbstractController
         $errorMessage['message'] = $errorMessage;
         return $errorMessage;
     }
-
-    /**
-     * Render an error message into the browser with a json format
-     */
-    public function renderErrorMessage($title, $errorMessage){
-        return $this->render('index.html.php',array(
-            'jsonArray' => $this->generateErrorMessage($title,$errorMessage)
-        ));
-    }
 }
 ?>

@@ -18,7 +18,7 @@ class PokemonController extends AbstractController
     private $jsonRenderer;
 
     function __construct(){
-        $jsonRenderer = new JSONController();
+        $this->jsonRenderer = new JSONController();
     }
 
     /**
@@ -93,7 +93,7 @@ class PokemonController extends AbstractController
         }else{
             $pokemonList = $this->generateCommonList($this->loadTypeList($firstTypeId, $secondTypeId));
             $returnData = $this->loadSpriteAndName($pokemonList[rand(0,sizeof($pokemonList)-1)]);
-            return $this->jsonRenderer->renderJSONPage($returnData);
+            return $this->renderJSONPage($returnData);
         }
     }
 
@@ -124,7 +124,7 @@ class PokemonController extends AbstractController
                 array_push($arrayType["typeList"], $this->loadLocalizedType($singleType["url"]));
             }
         }
-        return $this->jsonRenderer->renderJSONPage($arrayType);
+        return $this->renderJSONPage($arrayType);
     }
 
     /**
@@ -216,9 +216,9 @@ class PokemonController extends AbstractController
      */
     public function fetchPokedexPage($pageId){
         if($pageId<0){
-            return $this->jsonRenderer->generateErrorMessage("Pokemon list fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive or null.");
+            return $this->renderJSONPage($this->jsonRender->generateErrorMessage("Pokemon list fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive or null."));
         }else{
-            return $this->jsonRenderer->renderJSONPage($this->getAllPokemonBasicData($pageId));
+            return $this->renderJSONPage($this->getAllPokemonBasicData($pageId));
         }
     }
     
@@ -227,7 +227,17 @@ class PokemonController extends AbstractController
      */
     public function renderPokemonBasicInformations($id)
     {
-        return $this->jsonRenderer->renderJSONPage($this->loadPokemonInfos("https://pokeapi.co/api/v2/pokemon/",$id));
+        if($id<=0){
+            return $this->renderJSONPage($this->jsonRender->generateErrorMessage("Pokemon fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive."));
+        }else{
+            return $this->renderJSONPage($this->loadPokemonInfos("https://pokeapi.co/api/v2/pokemon/",$id));
+        }
+    }
+
+    private function renderJSONPage($jsonArray){
+        return $this->render('index.html.php',array(
+            'jsonArray' => $jsonArray
+        ));
     }
 }
 ?>
