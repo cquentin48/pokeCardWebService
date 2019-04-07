@@ -12,38 +12,32 @@ use Kreait\Firebase\ServiceAccount;
 require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 class UserDatabaseController extends AbstractController
 {
-    public $firebaseInstance;
+    private $firebaseInstance;
+    private $jsonRender;
     private $pokemonSpriteURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
     private $pokemonSpriteExtension = ".png";
 
     function __construct(){
         $this->firebaseInstance = new FirebaseController();
+        $this->jsonRender = new JSONController();
     }
 
     public function loadFriendList($userId){
         $returnedArray = [];
         if($userId == "No user Id"){
-            $returnedArray['title'] = "Error";
-            $returnedArray['message'] = "No user chosen";
-            return $this->render('index.html.php',array(
-                'jsonArray' => $returnedArray
-            ));
+            return $this->jsonRender->renderErrorMessage("Error","No user chosen");
         }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->returnReference("users/$userId/friendsList"))){
-            $returnedArray['title'] = "Information";
-            $returnedArray['message'] = "No user friend";
-            return $this->render('index.html.php',array(
-                'jsonArray' => $returnedArray
-            ));
+            return $this->jsonRender->renderErrorMessage("Information","No user friend");
         }else{
-            $returnedArray['returnedData'] = $this->loadUserFriendsId($userId);
-            return $this->render('index.html.php', array(
-                'jsonArray' => $returnedArray
-            ));
+            return $this->jsonRender->renderJSONPage($this->loadUserFriendsId($userId));
         }
     }
 
     public function loadPokemonCollection($userId){
-        $pokemonCollection = $this->firebaseInstance->returnValueOfReference("collections/$userId")
+        return $this->jsonRender->renderJSONPage($this->importPokemonCollection($this->firebaseInstance->returnValueOfReference("collections/$userId")));
+    }
+
+    private function importPokemonCollection($pokemonCollection){
         $pokemonList = [];
         foreach($pokemonCollection as $pokemonId => $singlePokemon){
             $pokemonList[$pokemonId] = [];
@@ -52,9 +46,7 @@ class UserDatabaseController extends AbstractController
                 $pokemonList[$pokemonId]['sprite'] = $this->pokemonSpriteURL.$pokemonId.$this->pokemonSpriteExtension;
             }
         }
-        return $this->render('index.html.php', array(
-            'jsonArray' => $pokemonList
-        ));
+        return $pokemonList;
     }
 
     private function loadUserFriendsId($userId){
