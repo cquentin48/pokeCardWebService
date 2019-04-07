@@ -17,6 +17,9 @@ class FirebaseController extends AbstractController
     private $database;
     private $references;
 
+    /**
+     * Init the firebase database factory
+     */
     private function initFactory(){
         $this->jsonFileContent = ServiceAccount::fromJsonFile(dirname(__DIR__).'/secretJSONData/pokeapi-1541497105412-186297ab70cc.json');
         $this->factory = (new Factory)
@@ -28,18 +31,30 @@ class FirebaseController extends AbstractController
         ->create();
     }
 
+    /**
+     * Return the reference of a database child
+     */
     public function getReference($refId){
         return $this->references[$refId];
     }
 
+    /**
+     * Init the firebase database attribute
+     */
     private function initDatabase(){
         $this->database = $this->factory->getDatabase();
     }
 
+    /**
+     * Check if a child is empty
+     */
     public function isChildEmpty($ref){
         return !($ref->getSnapshot()->exists());
     }
 
+    /**
+     * Return the reference of database child
+     */
     public function returnReference($string){
         return $this->database->getReference($string);
     }
@@ -47,18 +62,11 @@ class FirebaseController extends AbstractController
     function __construct(){
         $this->initFactory();
         $this->initDatabase();
-        $this->initFirebaseReferences();
     }
 
-    private function initFirebaseReferences(){
-        $references = [];
-        $references['users'] = $this->database->getReference('users')->getSnapshot();
-    }
-
-    public function insertIntoDatabase($ref, $data){
-        $ref->set($data);
-    }
-
+    /**
+     * Return the value of a database child reference
+     */
     public function returnValueOfReference($reference){
         return $this->returnReference($reference)->getSnapshot()->getValue();
     }
