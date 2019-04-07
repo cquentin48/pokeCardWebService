@@ -28,11 +28,11 @@ class UserDatabaseController extends AbstractController
     public function loadFriendList($userId){
         $returnedArray = [];
         if($userId == "No user Id"){
-            return $this->jsonRender->renderErrorMessage("Error","No user chosen");
+            return $this->renderErrorMessage("Error","No user chosen");
         }else if($this->firebaseInstance->isChildEmpty($this->firebaseInstance->returnReference("users/$userId/friendsList"))){
-            return $this->jsonRender->renderErrorMessage("Information","No user friend");
+            return $this->generateError("Information","No user friend");
         }else{
-            return $this->jsonRender->renderJSONPage($this->loadUserFriendsId($userId));
+            return $this->renderJSONPage($this->loadUserFriendsId($userId));
         }
     }
 
@@ -40,7 +40,7 @@ class UserDatabaseController extends AbstractController
      * Load pokemon firebase collections from a chosen user
      */
     public function loadPokemonCollection($userId){
-        return $this->jsonRender->renderJSONPage($this->importPokemonCollection($this->firebaseInstance->returnValueOfReference("collections/$userId")));
+        return $this->renderJSONPage($this->importPokemonCollection($this->firebaseInstance->returnValueOfReference("collections/$userId")));
     }
 
     /**
@@ -79,6 +79,22 @@ class UserDatabaseController extends AbstractController
         $userData['username'] = $rawData['username'];
         $userData['sprite'] = $rawData['avatarImage'];
         return $userData;
+    }
+
+    /**
+     * Render a json page into the browser with a json format
+     */
+    private function renderJSONPage($jsonArray){
+        return $this->render('index.html.php',array(
+            'jsonArray' => $jsonArray
+        ));
+    }
+
+    /**
+     * Render a json page into the browser with a json format while containing the error message with title
+     */
+    private function renderErrorMessage($title, $message){
+        return $this->renderJSONPage($this->jsonRenderer->generateErrorMessage($title,$message));
     }
 }
 ?>

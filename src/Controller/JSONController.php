@@ -20,7 +20,7 @@ class JSONController extends AbstractController
     /**
      * Return an array which contains the error message
      */
-    private function generateErrorMessage($title, $errorMessage){
+    public function generateErrorMessage($title, $errorMessage){
         $errorMessage = [];
         $errorMessage['title'] = $title;
         $errorMessage['message'] = $errorMessage;
