@@ -40,7 +40,7 @@ class UserDatabaseController extends AbstractController
      * Load pokemon firebase collections from a chosen user
      */
     public function loadPokemonCollection($userId){
-        return $this->renderJSONPage($this->importPokemonCollection($this->firebaseInstance->returnValueOfReference("collections/$userId")));
+        return $this->renderJSONPage($this->importPokemonCollection($this->firebaseInstance->returnValueOfReference("users/$userId/pokemonCollection/")));
     }
 
     /**
