@@ -42,11 +42,11 @@ class PokemonController extends AbstractController
     }
 
     public function hasPokemonId($userId, $pokemonId){
-        return $this->hasPokemon("users/$userId/$pokemonCollection/$pokemonId");
+        return $this->hasPokemon("users/$userId/pokemonCollection/$pokemonId");
     }
 
     public function hasCraftedPokemon($userId, $pokemonId, $craftedPokemonId){
-        return $this->hasPokemon("users/$userId/$pokemonCollection/$pokemonId/$craftedPokemonId")->getSnapshot()->getValue();
+        return $this->hasPokemon("users/$userId/pokemonCollection/$pokemonId/$craftedPokemonId")->getSnapshot()->getValue();
     }
 
     private function dissolvePokemonFirebase($pokemonId, $craftedPokemonId, $userId){

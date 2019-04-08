@@ -82,8 +82,8 @@ class ExchangesController extends AbstractController
     }
 
     private function movePokemonToFriend($userId, $friendId, $pokemonId, $pokemonCraftedId,$data){
-        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$pokemonCraftedId")->getSnapshot()->remove();
-        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId/$pokemonCraftedId")->getSnapshot()->set($data);
+        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$pokemonCraftedId")->remove();
+        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId/$pokemonCraftedId")->set($data);
     }
 
     public function addPokemonToExchangeMarket($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
