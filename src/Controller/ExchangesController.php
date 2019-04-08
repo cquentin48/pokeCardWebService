@@ -25,7 +25,7 @@ class ExchangesController extends AbstractController
             $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if($craftedPokemonId == ""){
             $this->renderErrorMessage("Error","Please choose a crafted with an existing id");
-        }else if($firebaseInstance->userExist($userId)){
+        }else if($this->firebaseInstance->userExist($userId)){
             $this->renderErrorMessage("Error","User not found.");
         }else{
             insertIntoMarketExchange($pokemonId, $craftedPokemonId, $userId);
