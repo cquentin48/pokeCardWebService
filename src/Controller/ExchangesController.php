@@ -10,7 +10,7 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
 require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
-class UserDatabaseController extends AbstractController
+class ExchangesController extends AbstractController
 {
     private $firebaseInstance;
     private $jsonRender;
