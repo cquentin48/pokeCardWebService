@@ -22,7 +22,7 @@ class ExchangesController extends AbstractController
         $this->pokemonController = new PokemonController();
     }
 
-    public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
+    public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId, $originalCraftedPokemonId, $pokemonCraftedIdWanted){
         if($pokemonIdWanted<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if($originalPokemonId <= 0){
@@ -36,7 +36,13 @@ class ExchangesController extends AbstractController
         }else if(!$this->pokemonController->hasPokemonId($friendUserId, $pokemonIdWanted)){
             return $this->renderErrorMessage("Error","No pokemon found for pokemon id $userId");
         }else{
-            $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId, $friendUserId);
+            $this->confirmExchangeFirebase($originalPokemonId,
+                                           $pokemonIdWanted,
+                                           $pokemonCraftedIdWanted,
+                                           $originalCraftedPokemonId,
+                                           $userId,
+                                           $friendUserId);
+                                           
             return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
         }
     }
