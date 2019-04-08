@@ -14,11 +14,46 @@ class PokemonController extends AbstractController
     private $pokemonLocalizationURL = "https://pokeapi.co/api/v2/pokemon-species/";
     private $pokemonTypesURL = "https://pokeapi.co/api/v2/type/";
     private $limit = 20;
+    private $firebaseController;
 
     private $jsonRenderer;
 
     function __construct(){
         $this->jsonRenderer = new JSONController();
+        $this->firebaseController = new FirebaseController();
+    }
+
+    public function dissolvePokemon($userId, $pokemonId, $craftedPokemonId){
+        if($pokemonId<=0){
+            return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
+        }else if($craftedPokemonId == ""){
+            return $this->renderErrorMessage("Error","Pokemon not found");
+        }else if(!$this->firebaseInstance->userExist($userId)){
+            return $this->renderErrorMessage("Error","User not found.");
+        }else{
+            $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId, $friendUserId);
+            return $this->renderErrorMessage("Success","Pokemon $pokemonId dissolved");
+        }
+    }
+
+    private function hasPokemon($ref){
+        $userRef = $this->firebaseController->returnReference($ref)->getSnapshot()->getValue();
+        return $userRef != null;
+    }
+
+    public function hasPokemonId($userId, $pokemonId){
+        return $this->hasPokemon("users/$userId/$pokemonCollection/$pokemonId");
+    }
+
+    public function hasCraftedPokemon($userId, $pokemonId, $craftedPokemonId){
+        return $this->hasPokemon("users/$userId/$pokemonCollection/$pokemonId/$craftedPokemonId")->getSnapshot()->getValue();
+    }
+
+    private function dissolvePokemon($pokemonId, $craftedPokemonId, $userId){
+        $ref = $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$craftedPokemonId");
+        $ref->remove();
+        $pokePiecesRef = $this->firebaseInstance->returnReference("user/$UserId/pokePieces");
+        $pokePiecesRef->set($pokePiecesRef->getSnapshpot()->getValue+10);
     }
 
     /**
