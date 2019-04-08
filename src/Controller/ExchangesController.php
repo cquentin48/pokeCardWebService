@@ -20,24 +20,27 @@ class ExchangesController extends AbstractController
         $this->jsonRenderer = new JSONController();
     }
 
-    public function addPokemonToExchangeMarket($pokemonId, $craftedPokemonId, $userId){
-        if($pokemonId<=0){
+    public function addPokemonToExchangeMarket($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
+        if($pokemonIdWanted<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
-        }else if($craftedPokemonId == ""){
-            return $this->renderErrorMessage("Error","Please choose a crafted with an existing id");
+        }else if($originalPokemonId <= 0){
+            return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if(!$this->firebaseInstance->userExist($userId)){
             return $this->renderErrorMessage("Error","User not found.");
+        }else if(!$this->firebaseInstance->userExist($friendUserId)){
+            return $this->renderErrorMessage("Error","User not found.");
         }else{
-            $this->insertIntoMarketExchange($pokemonId, $craftedPokemonId, $userId);
-            return $this->renderErrorMessage("Success","Pokemon n°$pokemonId added to the market.");
+            $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId, $friendUserId);
+            return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
         }
     }
 
-    private function insertIntoMarketExchange($pokemonId, $craftedPokemonId, $userId){
-        $data = $this->firebaseInstance->returnValueOfReference("users/$userId/pokemonCollection/$pokemonId/$craftedPokemonId");
-        $data['originalUserId'] = $userId;
-        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$craftedPokemonId")->remove();
-        $this->firebaseInstance->returnReference("exchanges/gts/$userId/pokemonCollection/$pokemonId/$craftedPokemonId")->set($data);
+    private function insertIntoMarketExchange($pokemonId, $pokemonIdWanted, $userId, $friendUserId){
+        $friendUserIdRef = $this->firebaseInstance->returnReference("users/$friendUserId/exchanges/$pokemonIdWanted")->getSnapshot();
+        $exchangeData = [];
+        $exchangeData['userId'] = $userId;
+        $exchangeData['originalPokemonId'] = $pokemonId;
+        $friendUserIdRef->push($exchangeData);
     }
 
     /**

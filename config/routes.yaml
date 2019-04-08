@@ -40,9 +40,10 @@ pokemonBasicInfos:
         id: 0
 #MarketExchanges
 addPokemonToMarket:
-    path : /exchanges/{userId}/{pokemonId}/{craftedPokemonId}
+    path : /exchanges/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
     controller: App\Controller\ExchangesController::addPokemonToExchangeMarket
     defaults:
-        pokemonId: 0
-        craftedPokemonId: ""
+        pokemonIdWanted: 0
+        originalPokemonId: 0
         userId: "No user Id"
+        friendUserId: "No user Id"
