@@ -36,11 +36,17 @@ class ExchangesController extends AbstractController
     }
 
     private function insertIntoMarketExchange($pokemonId, $pokemonIdWanted, $userId, $friendUserId){
-        $friendUserIdRef = $this->firebaseInstance->returnReference("users/$friendUserId/exchanges/$pokemonIdWanted")->getSnapshot();
+        $friendUserIdRef = $this->firebaseInstance->returnReference("users/$friendUserId/exchanges/$pokemonIdWanted");
+        if($friendUserIdRef->getSnapshot()->getValue() == null){
+            $rawData = [];
+        }else{
+            $rawData = $friendUserIdRef->getValue();
+        }
         $exchangeData = [];
         $exchangeData['userId'] = $userId;
         $exchangeData['originalPokemonId'] = $pokemonId;
-        $friendUserIdRef->push($exchangeData);
+        array_push($rawData,$exchangeData);
+        $friendUserIdRef->set($exchangeData);
     }
 
     /**
