@@ -65,7 +65,7 @@ class FirebaseController extends AbstractController
     }
 
     function userExist($userId){
-        return $this->returnReference("users/$userId")->exists();
+        return $this->returnReference("users/$userId") != null;
     }
 
     /**
