@@ -38,6 +38,13 @@ pokemonBasicInfos:
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
+disolvingPokemon:
+    path: /users/{userId}/disolving/{pokemonId}/{pokemonCraftedId}
+    controller: App\Controller\PokemonController::renderPokemonBasicInformations
+    defaults:
+        userId : "No user Id"
+        pokemonId : 0
+        pokemonCraftedId : ""
 #MarketExchanges
 addPokemonToMarket:
     path : /exchanges/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
@@ -49,3 +56,18 @@ addPokemonToMarket:
         originalPokemonIdCrafted: ""
         userId: "No user Id"
         friendUserId: "No user Id"
+confirmExchange:
+    path: /exchanges/confirm/{userId}/{originalPokemonId}/{originalCraftedPokemonId}/{friendUserId}/{pokemonIdWanted}/{pokemonCraftedIdWanted}
+    defaults:
+        pokemonIdWanted: 0
+        originalPokemonId: 0
+        userId: "No user Id"
+        friendUserId: "No user Id"
+        originalCraftedPokemonId: ""
+        pokemonCraftedIdWanted: ""
+sendPokemonToProfChen:
+    path: /users/{userId}/sendpokemontochen/{pokemonId}/{pokemonCraftedId}
+    defaults:
+        pokemonId: 0
+        userId: "No user Id"
+        pokemonCraftedId: ""

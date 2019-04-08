@@ -31,7 +31,7 @@ class PokemonController extends AbstractController
         }else if(!$this->firebaseInstance->userExist($userId)){
             return $this->renderErrorMessage("Error","User not found.");
         }else{
-            $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId, $friendUserId);
+            $this->dissolvePokemonFirebase($userId, $pokemonId, $craftedPokemonIdd);
             return $this->renderErrorMessage("Success","Pokemon $pokemonId dissolved");
         }
     }
@@ -49,7 +49,7 @@ class PokemonController extends AbstractController
         return $this->hasPokemon("users/$userId/$pokemonCollection/$pokemonId/$craftedPokemonId")->getSnapshot()->getValue();
     }
 
-    private function dissolvePokemon($pokemonId, $craftedPokemonId, $userId){
+    private function dissolvePokemonFirebase($pokemonId, $craftedPokemonId, $userId){
         $ref = $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$craftedPokemonId");
         $ref->remove();
         $pokePiecesRef = $this->firebaseInstance->returnReference("user/$UserId/pokePieces");

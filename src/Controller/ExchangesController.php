@@ -62,7 +62,7 @@ class ExchangesController extends AbstractController
     public function sendPokemonToProfChen($userId, $pokemonId, $pokemonCraftedId){
         if($pokemonId<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
-        else if(!$this->firebaseInstance->userExist($userId)){
+        }else if(!$this->firebaseInstance->userExist($userId)){
             return $this->renderErrorMessage("Error","User not found.");
         }else if(!$this->pokemonController->hasPokemonId($userId, $pokemonId)){
             return $this->renderErrorMessage("Error","No pokemon found for pokemon id $userId");
