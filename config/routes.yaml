@@ -38,3 +38,11 @@ pokemonBasicInfos:
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
+#MarketExchanges
+addPokemonToMarket:
+    path : /exchanges/{userId}/{pokemonId}/{craftedPokemonId}
+    controller: App\Controller\ExchangesController::addPokemonToExchangeMarket
+    defaults:
+        pokemonId: 0
+        craftedPokemonId: ""
+        userId: "No user Id"

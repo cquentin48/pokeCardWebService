@@ -64,6 +64,10 @@ class FirebaseController extends AbstractController
         $this->initDatabase();
     }
 
+    function userExist($userId){
+        return $this->returnReference("users/$userId")->exists();
+    }
+
     /**
      * Return the value of a database child reference
      */
