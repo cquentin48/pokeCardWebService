@@ -13,23 +13,23 @@ require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 class ExchangesController extends AbstractController
 {
     private $firebaseInstance;
-    private $jsonRender;
+    private $jsonRenderer;
     
     function __construct(){
         $this->firebaseInstance = new FirebaseController();
-        $this->jsonRender = new JSONController();
+        $this->jsonRenderer = new JSONController();
     }
 
     public function addPokemonToExchangeMarket($pokemonId, $craftedPokemonId, $userId){
         if($pokemonId<=0){
-            $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
+            return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if($craftedPokemonId == ""){
-            $this->renderErrorMessage("Error","Please choose a crafted with an existing id");
+            return $this->renderErrorMessage("Error","Please choose a crafted with an existing id");
         }else if(!$this->firebaseInstance->userExist($userId)){
-            $this->renderErrorMessage("Error","User not found.");
+            return $this->renderErrorMessage("Error","User not found.");
         }else{
-            insertIntoMarketExchange($pokemonId, $craftedPokemonId, $userId);
-            renderErrorMessage("Success","Pokemon n°$pokemonId added to the market.");
+            $this->insertIntoMarketExchange($pokemonId, $craftedPokemonId, $userId);
+            return $this->renderErrorMessage("Success","Pokemon n°$pokemonId added to the market.");
         }
     }
 
