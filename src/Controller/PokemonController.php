@@ -179,6 +179,7 @@ class PokemonController extends AbstractController
      */
     public function addPokemonToFirebase($userId, $pokemonId, $nickname, $creationDate){
         $this->firebaseController->getDatabase()->getReference("users/$userId/pokemonCollection/$pokemonId")->set($this->generateFirebasePokemonArray($nickname, $creationDate));
+        return $this->renderErrorMessage("Success","Success");
     }
 
     /**
@@ -187,7 +188,8 @@ class PokemonController extends AbstractController
     private function generateFirebasePokemonArray($nickname, $creationDate){
         $outputArray = [];
         $outputArray['creationDate'] = $creationDate;
-        $outputArray['nickname'] = $surname;
+        $outputArray['nickname'] = $nickname;
+        return $outputArray;
     }
 
     /**
