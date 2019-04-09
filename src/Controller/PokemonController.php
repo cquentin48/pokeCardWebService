@@ -90,6 +90,14 @@ class PokemonController extends AbstractController
     }
 
     /**
+     * Return the pokemon id list owned by the user
+     * @param userId id of the user
+     */
+    private function loadPokemonIdCollections($userId){
+        return $this->firebaseInstance->getDatabase()->getReference("users/$userId/pokemonCollection")->getChildKeys();
+    }
+
+    /**
      * Load all pokemon id based on the types chosen
      */
     private function loadTypeList($firstTypeId, $secondTypeId){
@@ -97,6 +105,19 @@ class PokemonController extends AbstractController
         $pokemonIdArray['firstType'] = $this->loadAllPokemonFromType($firstTypeId);
         $pokemonIdArray['secondType'] = $this->loadAllPokemonFromType($secondTypeId);
         return $pokemonIdArray;
+    }
+
+    /**
+     * Filter the generated pokemon list in order to keep only the list of not owned pokemon by the user
+     */
+    private function filterPokemonListByAlreadyOwnedPokemons($userId, $rawData){
+        $idList = $this->loadPokemonIdCollections($userId);
+        foreach($rawData as $singlePokemonId){
+            if(in_array($singlePokemonId,$idList)){
+                unset($singlePokemonId);
+            }
+        }
+        return $rawData;
     }
 
     /**
@@ -122,11 +143,12 @@ class PokemonController extends AbstractController
     /**
      * Generate a random pokemon for the crafting fragment
      */
-    public function craftPokemon($firstTypeId, $secondTypeId){
+    public function craftPokemon($firstTypeId, $secondTypeId, $userId){
         if($firstTypeId<0 || $secondTypeId<0){
             return $this->jsonRenderer->renderErrorMessage("Error","A type id can't be null");
         }else{
             $pokemonList = $this->generateCommonList($this->loadTypeList($firstTypeId, $secondTypeId));
+            $pokemonList = $this->filterPokemonListByAlreadyOwnedPokemons($userId, $pokemonList);
             $returnData = $this->loadSpriteAndName($pokemonList[rand(0,sizeof($pokemonList)-1)]);
             return $this->renderJSONPage($returnData);
         }
@@ -144,6 +166,22 @@ class PokemonController extends AbstractController
         $pokemonArray['name'] = $nameData['names'][6]['name'];
         $pokemonArray['id'] = $pokemonId;
         return $pokemonArray;
+    }
+
+    /**
+     * Add the pokemon to the pokemon collection of the user in firebase
+     */
+    public function addPokemonToFirebase($userId, $pokemonId, $nickname, $creationDate){
+        $this->firebaseController->getDatabase()->getReference("users/$userId/pokemonCollection/$pokemonId")->set($this->generateFirebasePokemonArray($nickname, $creationDate));
+    }
+
+    /**
+     * Generate the array used to add pokemon in firebase
+     */
+    private function generateFirebasePokemonArray($nickname, $creationDate){
+        $outputArray = [];
+        $outputArray['creationDate'] = $creationDate;
+        $outputArray['nickname'] = $surname;
     }
 
     /**

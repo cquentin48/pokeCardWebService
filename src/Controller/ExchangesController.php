@@ -102,14 +102,7 @@ class ExchangesController extends AbstractController
         $this->firebaseInstance->getDatabase()->getReference("users/$userId/exchanges/$pokemonId")->remove();
     }
 
-    private function loadPokemonIdCollections(){
-
-    }
-
-    /**
-     * 
-     */
-    private function loadRandomPokemonById($userId, $pokemonId){
+    public function loadRandomPokemonById($userId, $pokemonId){
         return $this->firebaseInstance->getDatabase()->getReference("users/$userId/pokemonCollection/$pokemonId")->getValue();
     }
 

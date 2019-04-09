@@ -23,11 +23,12 @@ loadTypes:
     path: /types/all
     controller: App\Controller\PokemonController::loadTypes
 craftPokemon:
-    path: /craft/pokemon/{firstTypeId}/{secondTypeId}
+    path: users/{userId}/craft/pokemon/{firstTypeId}/{secondTypeId}
     controller: App\Controller\PokemonController::craftPokemon
     defaults:
         firstTypeId: 0
         secondTypeId: 0
+        userId: ""
 fetchList:
     path: /pokemonlist/{pageId}
     controller: App\Controller\PokemonController::fetchPokedexPage
@@ -45,6 +46,14 @@ disolvingPokemon:
         userId : "No user Id"
         pokemonId : 0
         pokemonCraftedId : ""
+addPokemonToFirebase:
+    path: /users/{userId}/add/{pokemonId}
+    controller: App\Controller\PokemonController::addPokemonToFirebase
+    defaults:
+        userId : "No user Id"
+        pokemonId : 0
+        nickname : ""
+        creationDate : ""
 #MarketExchanges
 addPokemonToMarket:
     path : /exchanges/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
