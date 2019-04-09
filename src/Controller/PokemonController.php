@@ -96,7 +96,11 @@ class PokemonController extends AbstractController
      * @param userId id of the user
      */
     private function loadPokemonIdCollections($userId){
-        return $this->firebaseController->getDatabase()->getReference("users/$userId/pokemonCollection")->getChildKeys();
+        if($this->firebaseController->userExist($userId)){
+            return $this->firebaseController->getDatabase()->getReference("users/$userId/pokemonCollection")->getChildKeys();
+        }else{
+            return [];
+        }
     }
 
     /**
@@ -166,7 +170,7 @@ class PokemonController extends AbstractController
         $pokemonArray['sprite'] = $spriteData['sprites']['front_default'];
         $nameData = json_decode(file_get_contents($this->pokemonLocalizationURL.$pokemonId),true);
         $pokemonArray['name'] = $nameData['names'][6]['name'];
-        $pokemonArray['id'] = $pokemonId;
+        $pokemonArray['id'] = (int)$pokemonId;
         return $pokemonArray;
     }
 
