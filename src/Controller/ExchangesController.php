@@ -69,16 +69,11 @@ class ExchangesController extends AbstractController
         $this->movePokemonToFriend($friendUserId, $userId, $pokemonIdWanted, $pokemonWanted);
     }
 
-    public function loadPokemonById($userId, $pokemonId){
-        $value = $this->firebaseInstance->returnValueOfReference("users/$userId/pokemonCollection/$pokemonId");
-        return $this->renderJSONPage($value);
-    }
-
     /**
      * Move pokemon to another place
      */
     private function movePokemonToFriend($userId, $friendId, $pokemonId, $data){
-        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($pokemonId);
+        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($data);
         $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->remove();
     }
 
@@ -111,7 +106,7 @@ class ExchangesController extends AbstractController
      * 
      */
     private function loadRandomPokemonById($userId, $pokemonId){
-        return $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->getSnapshot()->getValue();
+        return $this->firebaseInstance->getDatabase()->getReference("users/$userId/pokemonCollection/$pokemonId")->getValue();
     }
 
     public function addPokemonToExchangeMarket($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){

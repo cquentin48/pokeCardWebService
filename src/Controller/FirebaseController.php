@@ -31,6 +31,10 @@ class FirebaseController extends AbstractController
         ->create();
     }
 
+    public function getDatabase(){
+        return $this->database;
+    }
+
     /**
      * Return the reference of a database child
      */
