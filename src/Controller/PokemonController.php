@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
+
 class PokemonController extends AbstractController
 {
     private $basicPokemonURL = "https://pokeapi.co/api/v2/pokemon/";
@@ -94,7 +96,7 @@ class PokemonController extends AbstractController
      * @param userId id of the user
      */
     private function loadPokemonIdCollections($userId){
-        return $this->firebaseInstance->getDatabase()->getReference("users/$userId/pokemonCollection")->getChildKeys();
+        return $this->firebaseController->getDatabase()->getReference("users/$userId/pokemonCollection")->getChildKeys();
     }
 
     /**
