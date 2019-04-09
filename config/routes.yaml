@@ -70,3 +70,9 @@ sendPokemonToProfChen:
     defaults:
         pokemonId: 0
         userId: "No user Id"
+getPokemonById:
+    path: /user/{userId}/pokemon/{pokemonId}
+    controller: App\Controller\ExchangesController::loadPokemonById
+    defaults:
+        userId: ""
+        pokemonId: 0

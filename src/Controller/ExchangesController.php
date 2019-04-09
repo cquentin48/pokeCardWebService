@@ -52,6 +52,10 @@ class ExchangesController extends AbstractController
         $this->firebaseInstance->returnReference("users/$userId/exchanges/$pokemonId")->remove();
     }
 
+    public function addPokemonToFirebase($userId, $pokemonId){
+
+    }
+
     /**
      * Confirm exchange in firebase
      */
@@ -63,6 +67,11 @@ class ExchangesController extends AbstractController
         $originalPokemon = $this->loadRandomPokemonById($userId,$originalPokemonId);
         $this->movePokemonToFriend($userId, $friendUserId, $originalPokemonId, $originalPokemon);
         $this->movePokemonToFriend($friendUserId, $userId, $pokemonIdWanted, $pokemonWanted);
+    }
+
+    public function loadPokemonById($userId, $pokemonId){
+        $value = $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->getSnapshot()->getValue();
+        return $this->renderJSONPage($value);
     }
 
     /**
