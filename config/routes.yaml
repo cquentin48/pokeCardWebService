@@ -47,7 +47,7 @@ disolvingPokemon:
         pokemonId : 0
         pokemonCraftedId : ""
 addPokemonToFirebase:
-    path: /users/{userId}/add/{pokemonId}
+    path: /users/{userId}/add/{pokemonId}/{nickname}/{creationDate}
     controller: App\Controller\PokemonController::addPokemonToFirebase
     defaults:
         userId : "No user Id"
