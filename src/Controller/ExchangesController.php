@@ -40,7 +40,7 @@ class ExchangesController extends AbstractController
                                            $pokemonIdWanted,
                                            $userId,
                                            $friendUserId);
-                                           
+            $this->removeExchange($friendUserId,$pokemonIdWanted);                          
             return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
         }
     }
@@ -96,6 +96,10 @@ class ExchangesController extends AbstractController
                                            
             return $this->renderErrorMessage("Success","Pokemon sent to prof Chen.");
         }
+    }
+
+    public function removeTradeProposition($userId, $originalPokemonId){
+        $this->firebaseInstance->getDatabase()->getReference("users/$userId/exchanges/$pokemonId")->remove();
     }
 
     private function loadPokemonIdCollections(){
