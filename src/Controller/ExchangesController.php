@@ -69,7 +69,7 @@ class ExchangesController extends AbstractController
      * Move pokemon to another place
      */
     private function movePokemonToFriend($userId, $friendId, $pokemonId, $data){
-        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($data);
+        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($pokemonId);
         $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->remove();
     }
 
