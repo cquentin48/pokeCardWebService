@@ -46,6 +46,13 @@ class ExchangesController extends AbstractController
     }
 
     /**
+     * Remove exchange from firebase
+     */
+    private function removeExchange($userId, $pokemonId){
+        $this->firebaseInstance->returnReference("users/$userId/exchanges/$pokemonId")->remove();
+    }
+
+    /**
      * Confirm exchange in firebase
      */
     public function confirmExchangeFirebase($pokemonIdWanted,
@@ -62,8 +69,8 @@ class ExchangesController extends AbstractController
      * Move pokemon to another place
      */
     private function movePokemonToFriend($userId, $friendId, $pokemonId, $data){
-        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->remove();
         $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($data);
+        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->remove();
     }
 
     /**
