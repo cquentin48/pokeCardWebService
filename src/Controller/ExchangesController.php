@@ -45,10 +45,11 @@ class ExchangesController extends AbstractController
         }
     }
 
+    /**
+     * Confirm exchange in firebase
+     */
     public function confirmExchangeFirebase($pokemonIdWanted,
                                             $originalPokemonId,
-                                            $pokemonCraftedIdWanted,
-                                            $originalCraftedPokemonId,
                                             $userId,
                                             $friendUserId){
         $pokemonWanted = $this->loadRandomPokemonById($friendUserId,$pokemonIdWanted,$pokemonCraftedIdWanted);
