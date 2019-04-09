@@ -52,8 +52,8 @@ class ExchangesController extends AbstractController
                                             $originalPokemonId,
                                             $userId,
                                             $friendUserId){
-        $pokemonWanted = $this->loadRandomPokemonById($friendUserId,$pokemonIdWanted,$pokemonCraftedIdWanted);
-        $originalPokemon = $this->loadRandomPokemonById($friendUserId,$pokemonIdWanted,$pokemonCraftedIdWanted);
+        $pokemonWanted = $this->loadRandomPokemonById($friendUserId,$pokemonIdWanted);
+        $originalPokemon = $this->loadRandomPokemonById($userId,$originalPokemonId);
         $this->movePokemonToFriend($userId, $friendUserId, $originalPokemonId, $originalPokemon);
         $this->movePokemonToFriend($friendUserId, $userId, $pokemonIdWanted, $pokemonWanted);
     }
@@ -66,6 +66,9 @@ class ExchangesController extends AbstractController
         $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($data);
     }
 
+    /**
+     * Send pokemon to Chen
+     */
     public function sendPokemonToProfChen($userId, $pokemonId, $pokemonCraftedId){
         if($pokemonId<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
@@ -78,7 +81,7 @@ class ExchangesController extends AbstractController
                                        "Chen",
                                        $pokemonId,
                                        $pokemonCraftedId,
-                                       $this->loadRandomPokemonById($userId,$pokemonId, $pokemonId));
+                                       $this->loadRandomPokemonById($userId,$pokemonId));
                                            
             return $this->renderErrorMessage("Success","Pokemon sent to prof Chen.");
         }
