@@ -57,19 +57,16 @@ addPokemonToMarket:
         userId: "No user Id"
         friendUserId: "No user Id"
 confirmExchange:
-    path: /exchanges/confirm/{userId}/{originalPokemonId}/{originalCraftedPokemonId}/{friendUserId}/{pokemonIdWanted}/{pokemonCraftedIdWanted}
+    path: /exchanges/confirm/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
     controller: App\Controller\ExchangesController::confirmExchange
     defaults:
         pokemonIdWanted: 0
         originalPokemonId: 0
         userId: "No user Id"
         friendUserId: "No user Id"
-        originalCraftedPokemonId: ""
-        pokemonCraftedIdWanted: ""
 sendPokemonToProfChen:
-    path: /users/{userId}/sendpokemontochen/{pokemonId}/{pokemonCraftedId}
+    path: /users/{userId}/sendpokemontochen/{pokemonId}
     controller: App\Controller\ExchangesController::sendPokemonToProfChen
     defaults:
         pokemonId: 0
         userId: "No user Id"
-        pokemonCraftedId: ""

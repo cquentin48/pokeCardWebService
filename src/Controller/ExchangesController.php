@@ -55,8 +55,16 @@ class ExchangesController extends AbstractController
                                             $friendUserId){
         $pokemonWanted = $this->loadRandomPokemonById($friendUserId,$pokemonIdWanted,$pokemonCraftedIdWanted);
         $originalPokemon = $this->loadRandomPokemonById($friendUserId,$pokemonIdWanted,$pokemonCraftedIdWanted);
-        $this->movePokemonToFriend($userId, $friendUserId, $originalPokemonId, $originalCraftedPokemonId, $originalPokemon);
-        $this->movePokemonToFriend($friendUserId, $friendUserId, $pokemonIdWanted, $pokemonCraftedIdWanted, $pokemonWanted);
+        $this->movePokemonToFriend($userId, $friendUserId, $originalPokemonId, $originalPokemon);
+        $this->movePokemonToFriend($friendUserId, $userId, $pokemonIdWanted, $pokemonWanted);
+    }
+
+    /**
+     * Move pokemon to another place
+     */
+    private function movePokemonToFriend($userId, $friendId, $pokemonId, $data){
+        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->remove();
+        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId")->set($data);
     }
 
     public function sendPokemonToProfChen($userId, $pokemonId, $pokemonCraftedId){
@@ -77,13 +85,15 @@ class ExchangesController extends AbstractController
         }
     }
 
-    private function loadRandomPokemonById($userId, $pokemonId, $pokemonCraftedId){
-        return $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$pokemonCraftedId")->getSnapshot()->getValue();
+    private function loadPokemonIdCollections(){
+
     }
 
-    private function movePokemonToFriend($userId, $friendId, $pokemonId, $pokemonCraftedId,$data){
-        $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId/$pokemonCraftedId")->remove();
-        $this->firebaseInstance->returnReference("users/$friendId/pokemonCollection/$pokemonId/$pokemonCraftedId")->set($data);
+    /**
+     * 
+     */
+    private function loadRandomPokemonById($userId, $pokemonId){
+        return $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->getSnapshot()->getValue();
     }
 
     public function addPokemonToExchangeMarket($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
