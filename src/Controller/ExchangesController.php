@@ -22,7 +22,7 @@ class ExchangesController extends AbstractController
         $this->pokemonController = new PokemonController();
     }
 
-    public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId, $originalCraftedPokemonId, $pokemonCraftedIdWanted){
+    public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
         if($pokemonIdWanted<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if($originalPokemonId <= 0){
@@ -38,8 +38,6 @@ class ExchangesController extends AbstractController
         }else{
             $this->confirmExchangeFirebase($originalPokemonId,
                                            $pokemonIdWanted,
-                                           $pokemonCraftedIdWanted,
-                                           $originalCraftedPokemonId,
                                            $userId,
                                            $friendUserId);
                                            
