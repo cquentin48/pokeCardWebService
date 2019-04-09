@@ -72,7 +72,7 @@ class FirebaseController extends AbstractController
      * Return the value of a database child reference
      */
     public function returnValueOfReference($reference){
-        return $this->returnReference($reference)->getSnapshot()->getValue();
+        return $this->returnReference($reference)->getValue();
     }
 }
 ?>

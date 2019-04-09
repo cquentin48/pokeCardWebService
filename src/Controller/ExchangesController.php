@@ -70,7 +70,7 @@ class ExchangesController extends AbstractController
     }
 
     public function loadPokemonById($userId, $pokemonId){
-        $value = $this->firebaseInstance->returnReference("users/$userId/pokemonCollection/$pokemonId")->getSnapshot()->getValue();
+        $value = $this->firebaseInstance->returnValueOfReference("users/$userId/pokemonCollection/$pokemonId");
         return $this->renderJSONPage($value);
     }
 
