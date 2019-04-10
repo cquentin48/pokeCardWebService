@@ -73,8 +73,8 @@ addPokemonToMarket:
     defaults:
         pokemonIdWanted: 0
         originalPokemonId: 0
-        pokemonIdWantedCraftedId: ""
-        originalPokemonIdCrafted: ""
+        pokemonIdWantedCraftedId: "No id"
+        originalPokemonIdCrafted: "No id"
         userId: "No user Id"
 listTrades:
     path: /{userId}/list/exchanges
