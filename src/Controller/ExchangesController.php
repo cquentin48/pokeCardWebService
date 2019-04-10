@@ -121,7 +121,7 @@ class ExchangesController extends AbstractController
             return $this->renderErrorMessage("Error","User not found.");
         }else{
             $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId);
-            return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
+            return $this->renderErrorMessage("Success","Pokemon wished sent to market");
         }
     }
 
