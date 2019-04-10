@@ -12,7 +12,7 @@ use Kreait\Firebase\ServiceAccount;
 require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 class UserDatabaseController extends AbstractController
 {
-    private $firebaseInstance;
+    public $firebaseInstance;
     private $jsonRender;
     private $pokemonSpriteURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
     private $pokemonSpriteExtension = ".png";
@@ -49,13 +49,11 @@ class UserDatabaseController extends AbstractController
     private function importPokemonCollection($pokemonCollection){
         $pokemonList = [];
         $pokemonList['collection'] = [];
-        foreach($pokemonCollection as $pokemonId => $singlePokemon){
-            foreach($singlePokemon as $key=>$singleCreatedPokemon){
+            foreach($pokemonCollection as $key=>$singleCreatedPokemon){
                 $data = $singleCreatedPokemon;
-                $data['sprite'] = $this->pokemonSpriteURL.$pokemonId.$this->pokemonSpriteExtension;
+                $data['sprite'] = $this->pokemonSpriteURL.$key.$this->pokemonSpriteExtension;
                 array_push($pokemonList['collection'],$data);
             }
-        }
         return $pokemonList;
     }
 
