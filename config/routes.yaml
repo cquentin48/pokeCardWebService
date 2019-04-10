@@ -87,6 +87,7 @@ confirmExchange:
         originalPokemonId: 0
         userId: "No user Id"
         friendUserId: "No user Id"
+        tradeId: -1
 sendPokemonToProfChen:
     path: /users/{userId}/sendpokemontochen/{pokemonId}
     controller: App\Controller\ExchangesController::sendPokemonToProfChen
