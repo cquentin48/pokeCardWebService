@@ -44,8 +44,9 @@ class UserDatabaseController extends AbstractController
         $data['avatarImage'] = $avatarImage;
         $data['distance'] = 0;
         $data['loggedIn'] = true;
-
-        $this->firebaseInstance->getDatabase()->getReference("users/$userId")->set($data);
+        if($this->firebaseInstance->getDatabase()->getReference("users/$userId")->getValue() == null){
+            $this->firebaseInstance->getDatabase()->getReference("users/$userId")->set($data);
+        }
         return $this->renderJSONPage($data);
     }
 
