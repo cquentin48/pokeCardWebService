@@ -119,7 +119,7 @@ class ExchangesController extends AbstractController
         return $this->firebaseInstance->getDatabase()->getReference("users/$userId/pokemonCollection/$pokemonId")->getValue();
     }
 
-    public function addPokemonToExchangeMarket($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
+    public function addPokemonToExchangeMarket($pokemonIdWanted, $originalPokemonId, $userId){
         if($pokemonIdWanted<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if($originalPokemonId <= 0){
@@ -129,22 +129,22 @@ class ExchangesController extends AbstractController
         }else if(!$this->firebaseInstance->userExist($friendUserId)){
             return $this->renderErrorMessage("Error","User not found.");
         }else{
-            $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId, $friendUserId);
+            $this->insertIntoMarketExchange($originalPokemonId, $pokemonIdWanted, $userId);
             return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
         }
     }
 
-    private function insertIntoMarketExchange($pokemonId, $pokemonIdWanted, $userId, $friendUserId){
-        $friendUserIdRef = $this->firebaseInstance->returnReference("users/$friendUserId/exchanges/$pokemonIdWanted");
-        if($friendUserIdRef->getSnapshot()->getValue() == null){
-            $rawData = [];
+    public function insertIntoMarketExchange($pokemonId, $pokemonIdWanted, $userId){
+        $friendUserIdRef = $this->firebaseInstance->returnReference("exchanges/$pokemonId/");
+        if($friendUserIdRef->getValue() == null){
+            $exchangeData = [];
         }else{
-            $rawData = $friendUserIdRef->getValue();
+            $exchangeData = $friendUserIdRef->getValue();
         }
-        $exchangeData = [];
-        $exchangeData['userId'] = $userId;
-        $exchangeData['originalPokemonId'] = $pokemonId;
-        array_push($rawData,$exchangeData);
+        $data = [];
+        $data['userId'] = $userId;
+        $data['wantedPokemon'] = $pokemonIdWanted;
+        array_push($exchangeData,$data);
         $friendUserIdRef->set($exchangeData);
     }
 

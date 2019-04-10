@@ -68,7 +68,7 @@ addPokemonToFirebase:
         creationDate : ""
 #MarketExchanges
 addPokemonToMarket:
-    path : /exchanges/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
+    path : /exchanges/{userId}/{originalPokemonId}/{pokemonIdWanted}
     controller: App\Controller\ExchangesController::addPokemonToExchangeMarket
     defaults:
         pokemonIdWanted: 0
@@ -76,7 +76,6 @@ addPokemonToMarket:
         pokemonIdWantedCraftedId: ""
         originalPokemonIdCrafted: ""
         userId: "No user Id"
-        friendUserId: "No user Id"
 listTrades:
     path: /{userId}/list/exchanges
     controller: App\Controller\ExchangesController::listTradeExchanges
