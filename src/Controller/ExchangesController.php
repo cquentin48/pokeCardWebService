@@ -32,26 +32,26 @@ class ExchangesController extends AbstractController
         return $this->renderJsonPage($data);
     }
 
-    public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId,$tradeId){
+    public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
         if($pokemonIdWanted<=0){
-            return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
+            //return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if($originalPokemonId <= 0){
-            return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
+            //return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");
         }else if(!$this->firebaseInstance->userExist($userId)){
-            return $this->renderErrorMessage("Error","User not found.");
+            //return $this->renderErrorMessage("Error","User not found.");
         }else if(!$this->firebaseInstance->userExist($friendUserId)){
-            return $this->renderErrorMessage("Error","User not found.");
+            //return $this->renderErrorMessage("Error","User not found.");
         }else if(!$this->pokemonController->hasPokemonId($userId, $originalPokemonId)){
-            return $this->renderErrorMessage("Error","No pokemon found for pokemon id $userId");
+            //return $this->renderErrorMessage("Error","No pokemon found for pokemon id $userId");
         }else if(!$this->pokemonController->hasPokemonId($friendUserId, $pokemonIdWanted)){
-            return $this->renderErrorMessage("Error","No pokemon found for pokemon id $userId");
+            //return $this->renderErrorMessage("Error","No pokemon found for pokemon id $userId");
         }else{
             $this->confirmExchangeFirebase($originalPokemonId,
                                            $pokemonIdWanted,
                                            $userId,
                                            $friendUserId);
-            $this->removeExchange($originalPokemonId, $userId);                          
-            return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
+            $this->removeExchange($originalPokemonId, $userId);
+            //return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
         }
     }
 
@@ -59,7 +59,7 @@ class ExchangesController extends AbstractController
      * Remove exchange from firebase
      */
     public function removeExchange($pokemonId,$userId){
-        $this->firebaseInstance->returnReference("exchanges/$pokemonId/$userId")->remove();
+        return $this->firebaseInstance->getDatabase()->getReference("exchanges/$pokemonId/$userId")->remove();
     }
 
     /**
