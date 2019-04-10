@@ -51,7 +51,7 @@ class ExchangesController extends AbstractController
                                            $userId,
                                            $friendUserId);
             $this->removeExchange($originalPokemonId, $userId);
-            //return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
+            return $this->renderErrorMessage("Success","Pokemon wished sent to $friendUserId");
         }
     }
 
