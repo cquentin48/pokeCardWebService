@@ -66,7 +66,7 @@ addPokemonToMarket:
         userId: "No user Id"
         friendUserId: "No user Id"
 listTrades:
-    path: /exchanges/{userId}/list
+    path: /{userId}/list/exchanges
     controller: App\Controller\ExchangesController::listTradeExchanges
     defaults:
         userId: "No user Id"
