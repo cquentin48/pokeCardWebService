@@ -35,6 +35,19 @@ class UserDatabaseController extends AbstractController
             return $this->renderJSONPage($this->loadUserFriendsId($userId));
         }
     }
+    public function initUser($username, $userId, $avatarImage, $email){
+        $data = [];
+        $data['username'] = $username;
+        $data['email'] = $email;
+        $data['registrationDate'] = "";
+        $data['lastUserConnection'] = "";
+        $data['avatarImage'] = $avatarImage;
+        $data['distance'] = 0;
+        $data['loggedIn'] = true;
+
+        $this->firebaseInstance->getDatabase()->getReference("users/$userId")->set($data);
+        return $this->renderJSONPage($data);
+    }
 
     public function getUserData($userId){
         $dataRef = $this->firebaseInstance->getDatabase()->getReference("users/$userId")->getValue();

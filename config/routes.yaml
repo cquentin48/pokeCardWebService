@@ -22,6 +22,14 @@ getUserData:
     controller: App\Controller\UserDatabaseController::getUserData
     defaults:
         userId: "No user Id"
+initUser:
+    path: /{userId}/init
+    controller: App\Controller\UserDatabaseController::initUser
+    defaults:
+        userId: "No user Id",
+        username: "",
+        avatarImage: "",
+        email: ""
 #PokemonController
 loadTypes:
     path: /types/all
