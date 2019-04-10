@@ -22,15 +22,12 @@ class ExchangesController extends AbstractController
         $this->pokemonController = new PokemonController();
     }
 
-    public function listTradeExchanges($userId){
-        $data = $this->firebaseInstance->getDatabase()->getReference("users/$userId/exchanges")->getValue();
+    public function listTradeExchanges(){
+        $data = $this->firebaseInstance->getDatabase()->getReference("exchanges")->getValue();
         if($data == null){
             $data = [];
-            $data['noTrade'] = [];
-            $data['noTrade']['originalePokemonId'] = -1;
-            $data['noTrade']['userId'] = "noUser";
         }else{
-            $data = $this->firebaseInstance->getDatabase()->getReference("users/$userId/exchanges")->getValue();
+            $data = $this->firebaseInstance->getDatabase()->getReference("exchanges")->getValue();
         }
         return $this->renderJsonPage($data);
     }
