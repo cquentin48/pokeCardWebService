@@ -36,6 +36,19 @@ class UserDatabaseController extends AbstractController
         }
     }
 
+    public function getUserData($userId){
+        $dataRef = $this->firebaseInstance->getDatabase()->getReference("users/$userId")->getValue();
+        $returnedData = [];
+        $returnedData['lastUserConnection'] = $dataRef['lastUserConnection'];
+        $returnedData['registrationDate'] = $dataRef['registrationDate'];
+        if($dataRef['pokemonCollection'] == 0){
+            $returnedData['pokemonCount'] = 0;
+        }else{
+            $returnedData['pokemonCount'] = sizeof($dataRef['pokemonCollection']);
+        }
+        return $this->renderJSONPage($returnedData);
+    }
+
     /**
      * Load pokemon firebase collections from a chosen user
      */

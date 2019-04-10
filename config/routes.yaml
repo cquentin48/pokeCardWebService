@@ -17,7 +17,11 @@ loadPokemonList:
     controller: App\Controller\UserDatabaseController::loadPokemonCollection
     defaults:
         userId: "No user Id"
-
+getUserData:
+    path: /userData/{userId}
+    controller: App\Controller\UserDatabaseController::getUserData
+    defaults:
+        userId: "No user Id"
 #PokemonController
 loadTypes:
     path: /types/all
