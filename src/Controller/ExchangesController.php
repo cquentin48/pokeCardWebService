@@ -22,6 +22,19 @@ class ExchangesController extends AbstractController
         $this->pokemonController = new PokemonController();
     }
 
+    public function listTradeExchanges($userId){
+        $data = $this->firebaseInstance->getDatabase()->getReference("users/$userId/exchanges")->getValue();
+        if($data == null){
+            $data = [];
+            $data['noTrade'] = [];
+            $data['noTrade']['originalePokemonId'] = -1;
+            $data['noTrade']['userId'] = "noUser";
+        }else{
+            $data = $this->firebaseInstance->getDatabase()->getReference("users/$userId/exchanges")->getValue();
+        }
+        return $this->renderJsonPage($data);
+    }
+
     public function confirmExchange($pokemonIdWanted, $originalPokemonId, $userId, $friendUserId){
         if($pokemonIdWanted<=0){
             return $this->renderErrorMessage("Error","Please choose a pokemon with an id strictly positive.");

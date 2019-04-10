@@ -65,6 +65,11 @@ addPokemonToMarket:
         originalPokemonIdCrafted: ""
         userId: "No user Id"
         friendUserId: "No user Id"
+listTrades:
+    path: /exchanges/{userId}/list
+    controller: App\Controller\ExchangesController::listTradeExchanges
+    defaults:
+        userId: "No user Id"
 confirmExchange:
     path: /exchanges/confirm/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
     controller: App\Controller\ExchangesController::confirmExchange
