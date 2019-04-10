@@ -47,7 +47,7 @@ class UserDatabaseController extends AbstractController
         if($this->firebaseInstance->getDatabase()->getReference("users/$userId")->getValue() == null){
             $this->firebaseInstance->getDatabase()->getReference("users/$userId")->set($data);
         }
-        return $this->renderJSONPage($data);
+        //return $this->renderJSONPage($data);
     }
 
     public function getUserData($userId){

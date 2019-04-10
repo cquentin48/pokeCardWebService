@@ -23,7 +23,7 @@ getUserData:
     defaults:
         userId: "No user Id"
 initUser:
-    path: /{userId}/init
+    path: /{userId}/init/{username}/{avatarImage}/{email}
     controller: App\Controller\UserDatabaseController::initUser
     defaults:
         userId: "No user Id"
