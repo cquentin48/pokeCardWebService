@@ -26,9 +26,9 @@ initUser:
     path: /{userId}/init
     controller: App\Controller\UserDatabaseController::initUser
     defaults:
-        userId: "No user Id",
-        username: "No username",
-        avatarImage: "No avatar url",
+        userId: "No user Id"
+        username: "No username"
+        avatarImage: "No avatar url"
         email: "No email"
 #PokemonController
 loadTypes:
