@@ -139,17 +139,20 @@ class ExchangesController extends AbstractController
     /**
      * Render a json page into the browser with a json format
      */
-    private function renderJSONPage($jsonArray){
-        return $this->render('index.html.php',array(
-            'jsonArray' => $jsonArray
-        ));
+    private function renderJSONPage($jsonArray, $statusCode=200){
+        $response = new JsonResponse();
+        $response->setData($jsonArray);
+        $response->setStatusCode($statusCode);
+        return $response;
     }
 
+    
     /**
      * Render a json page into the browser with a json format while containing the error message with title
      */
-    private function renderErrorMessage($title, $message){
-        return $this->renderJSONPage($this->jsonRenderer->generateErrorMessage($title,$message));
+    private function renderErrorMessage($title, $message, $errorId=200){
+        $errorData = $this->jsonRenderer->generateErrorMessage($title,$message, $errorId);
+        return $this->renderJSONPage($errorData);
     }
 }
 ?>
