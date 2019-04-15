@@ -8,28 +8,48 @@ index:
 
 #FirebaseController
 loadUserFriendList:
-    path: /loadUserFriendList/{userId}
+    path: user/loadfriendlist/?id={userId}
     controller : App\Controller\UserDatabaseController::loadFriendList
     defaults:
         userId: "No user Id"
 loadPokemonList:
-    path: /users/{userId}/pokemonList
+    path: /user/{userId}/pokemonlist
     controller: App\Controller\UserDatabaseController::loadPokemonCollection
     defaults:
         userId: "No user Id"
 getUserData:
-    path: /userData/{userId}
+    path: /user/getuserdata?id={userId}
     controller: App\Controller\UserDatabaseController::getUserData
     defaults:
         userId: "No user Id"
 initUser:
-    path: /{userId}/init
+    path: user/{userId}/init
     controller: App\Controller\UserDatabaseController::initUser
     defaults:
         userId: "No user Id"
         username: "No username"
         avatarImage: "No avatar url"
         email: "No email"
+addPokemonToFirebase:
+    path: /user/{userId}/addpokemontocollection?id={pokemonId}&nickname={nickname}&creationdate={creationDate}
+    controller: App\Controller\PokemonController::addPokemonToFirebase
+    defaults:
+        userId : "No user Id"
+        pokemonId : 0
+        nickname : ""
+        creationDate : ""
+sendPokemonToProfChen:
+    path: /user/{userId}/sendpokemontochen?id={pokemonId}
+    controller: App\Controller\ExchangesController::sendPokemonToProfChen
+    defaults:
+        pokemonId: 0
+        userId: "No user Id"
+getPokemonById:
+    path: /user/{userId}/pokemon/loadpokemonbyid?id={pokemonId}
+    controller: App\Controller\ExchangesController::loadPokemonById
+    defaults:
+        userId: ""
+        pokemonId: 0
 #PokemonController
 loadTypes:
     path: /types/all
@@ -42,33 +62,25 @@ craftPokemon:
         secondTypeId: 0
         userId: ""
 fetchList:
-    path: /pokemonlist/{pageId}
+    path: /pokemon/list/?pageId={pageId}
     controller: App\Controller\PokemonController::fetchPokedexPage
     defaults:
         pageId: 0
 pokemonBasicInfos:
-    path: /pokemon/{id}
+    path: /pokemon/rendbasicinfos?id={id}
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
 disolvingPokemon:
-    path: /users/{userId}/disolving/{pokemonId}/{pokemonCraftedId}
+    path: /users/{userId}/disolving?pokemonId={pokemonId}&pokemonIdCrafted={pokemonCraftedId}
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         userId : "No user Id"
         pokemonId : 0
         pokemonCraftedId : ""
-addPokemonToFirebase:
-    path: /users/{userId}/add/{pokemonId}/{nickname}/{creationDate}
-    controller: App\Controller\PokemonController::addPokemonToFirebase
-    defaults:
-        userId : "No user Id"
-        pokemonId : 0
-        nickname : ""
-        creationDate : ""
 #MarketExchanges
 addPokemonToMarket:
-    path : /exchanges/{userId}/{originalPokemonId}/{pokemonIdWanted}
+    path : /exchanges/{userId}/addpokemontomarket?originalPokemonId={originalPokemonId}&pokemonidwanted={pokemonIdWanted}
     controller: App\Controller\ExchangesController::addPokemonToExchangeMarket
     defaults:
         pokemonIdWanted: 0
@@ -77,25 +89,13 @@ addPokemonToMarket:
         originalPokemonIdCrafted: "No id"
         userId: "No user Id"
 listTrades:
-    path: /list/exchanges
+    path: /trades/list/
     controller: App\Controller\ExchangesController::listTradeExchanges
 confirmExchange:
-    path: /exchanges/confirm/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
+    path: /trades/confirm/{userId}/{originalPokemonId}/{friendUserId}/{pokemonIdWanted}
     controller: App\Controller\ExchangesController::confirmExchange
     defaults:
         pokemonIdWanted: 0
         originalPokemonId: 0
         userId: "No user Id"
         friendUserId: "No user Id"
-sendPokemonToProfChen:
-    path: /users/{userId}/sendpokemontochen/{pokemonId}
-    controller: App\Controller\ExchangesController::sendPokemonToProfChen
-    defaults:
-        pokemonId: 0
-        userId: "No user Id"
-getPokemonById:
-    path: /user/{userId}/pokemon/{pokemonId}
-    controller: App\Controller\ExchangesController::loadPokemonById
-    defaults:
-        userId: ""
-        pokemonId: 0
