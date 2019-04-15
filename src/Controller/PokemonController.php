@@ -320,7 +320,7 @@ class PokemonController extends AbstractController
      */
     private function renderJSONPage($jsonArray, $statusCode=200){
         $response = new JsonResponse();
-        $response->setData($data);
+        $response->setData($jsonArray);
         $response->setStatusCode($statusCode);
         return $response;
     }
