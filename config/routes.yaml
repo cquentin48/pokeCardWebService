@@ -67,7 +67,7 @@ fetchList:
     defaults:
         pageId: 0
 pokemonBasicInfos:
-    path: /pokemon/rendbasicinfos?id={id}
+    path: /pokemon/rendbasicinfos/{id}
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
