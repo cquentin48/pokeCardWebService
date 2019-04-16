@@ -113,16 +113,17 @@ class UserDatabaseController extends AbstractController
         $response = new JsonResponse();
         $response->setData($jsonArray);
         $response->setStatusCode($statusCode);
-        return $response;
+        print_r($response);
+        //return $response;
     }
 
     
     /**
      * Render a json page into the browser with a json format while containing the error message with title
      */
-    private function renderErrorMessage($title, $message, $errorId=200){
-        $errorData = $this->jsonRenderer->generateErrorMessage($title,$message, $errorId);
-        return $this->renderJSONPage($errorData);
+    private function renderErrorMessage($title, $message){
+        $errorData = $this->jsonRenderer->generateErrorMessage($title,$message);
+        return $errorData;
     }
 }
 ?>
