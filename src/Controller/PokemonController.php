@@ -330,8 +330,8 @@ class PokemonController extends AbstractController
      * Render a json page into the browser with a json format while containing the error message with title
      */
     private function renderErrorMessage($title, $message, $errorId=200){
-        $errorData = $this->jsonRenderer->generateErrorMessage($title,$message, $errorId);
-        return $this->renderJSONPage($errorData);
+        $errorData = $this->jsonRenderer->generateErrorMessage($title,$message);
+        return $this->renderJSONPage($errorData, $errorId);
     }
 }
 ?>
