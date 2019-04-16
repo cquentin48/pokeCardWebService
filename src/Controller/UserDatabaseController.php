@@ -113,8 +113,7 @@ class UserDatabaseController extends AbstractController
         $response = new JsonResponse();
         $response->setData($jsonArray);
         $response->setStatusCode($statusCode);
-        print_r($response);
-        //return $response;
+        return $response;
     }
 
     
