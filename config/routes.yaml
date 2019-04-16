@@ -62,12 +62,12 @@ craftPokemon:
         secondTypeId: 0
         userId: ""
 fetchList:
-    path: /pokemon/list/?pageId={pageId}
+    path: /pokemon/list/pageid={pageId}
     controller: App\Controller\PokemonController::fetchPokedexPage
     defaults:
         pageId: 0
 pokemonBasicInfos:
-    path: /pokemon/rendbasicinfos/{id}
+    path: /pokemon/rendbasicinfos/pokemonid={id}
     controller: App\Controller\PokemonController::renderPokemonBasicInformations
     defaults:
         id: 0
