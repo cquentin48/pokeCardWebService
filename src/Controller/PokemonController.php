@@ -297,7 +297,7 @@ class PokemonController extends AbstractController
      */
     public function fetchPokedexPage($pageId){
         if($pageId<0){
-            return $this->renderJSONPage(renderErrorMessage("Pokemon list fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive or null."));
+            return $this->renderJSONPage(renderErrorMessage("Pokemon list fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive or null.",400));
         }else{
             return $this->renderJSONPage($this->getAllPokemonBasicData($pageId));
         }
@@ -309,7 +309,7 @@ class PokemonController extends AbstractController
     public function renderPokemonBasicInformations($id)
     {
         if($id<=0){
-            return $this->renderJSONPage($this->renderErrorMessage("Pokemon fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive."));
+            return $this->renderJSONPage($this->renderErrorMessage("Pokemon fetching error","Error while fetching pokemon list from pokeapi. Please try again with a number positive.",400));
         }else{
             return $this->renderJSONPage($this->loadPokemonInfos("https://pokeapi.co/api/v2/pokemon/",$id));
         }
